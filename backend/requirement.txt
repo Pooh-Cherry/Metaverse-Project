@@ -1,0 +1,12 @@
+langchain
+python-dotenv
+langchain-community
+tiktoken
+faiss-cpu
+langchain-openai
+pypdf
+beautifulsoup4
+validators
+selenium
+webdriver_manager
+pymysql
