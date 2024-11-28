@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const UsersIcon = ({ width = 24, height = 25, color = '#64748B' }) => {
+const UsersIcon = ({ width = 24, height = 25, color = "#64748B" }) => {
   return (
     <svg
       width={width}
@@ -34,7 +34,7 @@ const UsersIcon = ({ width = 24, height = 25, color = '#64748B' }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default UsersIcon
+export default UsersIcon;

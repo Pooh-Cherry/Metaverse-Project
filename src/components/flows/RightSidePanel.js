@@ -1,8 +1,8 @@
-import { useFlow } from '@contexts/FlowContext'
-import clsx from 'clsx'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { NODE_LABELS } from './NodeItems'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useFlow } from "@contexts/FlowContext";
+import clsx from "clsx";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { NODE_LABELS } from "./NodeItems";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faClose,
@@ -10,93 +10,93 @@ import {
   faGripVertical,
   faHandDots,
   faTrash,
-  faTrashCan
-} from '@fortawesome/free-solid-svg-icons'
-import { AddTrigger } from '../../apis'
-import { SERVER_ADDRESS } from '@constants/config'
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import { AddTrigger } from "../../apis";
+import { SERVER_ADDRESS } from "@constants/config";
 
 const RightSidePanel = ({ open }) => {
-  const modal = useRef(null)
-  const { nodes, setMenuOpen, contents, setContents } = useFlow()
-  const [node, setNode] = useState(null)
-  const [show, setShow] = useState(true)
+  const modal = useRef(null);
+  const { nodes, setMenuOpen, contents, setContents } = useFlow();
+  const [node, setNode] = useState(null);
+  const [show, setShow] = useState(true);
 
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState([])
-  const [file, setFile] = useState('')
-  const [url, setUrl] = useState('')
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState([]);
+  const [file, setFile] = useState("");
+  const [url, setUrl] = useState("");
 
   const onClose = useCallback(() => {
     const timer = setTimeout(() => {
-      setMenuOpen(null)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [setMenuOpen])
+      setMenuOpen(null);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [setMenuOpen]);
 
   useEffect(() => {
-    const node = nodes.find(({ id }) => id === open)
-    setNode(node)
-    setTitle(contents[open]?.title || '')
-    setContent(contents[open]?.content || '')
-    const fullURL = SERVER_ADDRESS + '/' + contents[open]?.file || ''
-    const lastSegment = fullURL.substring(fullURL.lastIndexOf('/') + 1)
-    setUrl(lastSegment)
-  }, [open, nodes, contents])
+    const node = nodes.find(({ id }) => id === open);
+    setNode(node);
+    setTitle(contents[open]?.title || "");
+    setContent(contents[open]?.content || "");
+    const fullURL = SERVER_ADDRESS + "/" + contents[open]?.file || "";
+    const lastSegment = fullURL.substring(fullURL.lastIndexOf("/") + 1);
+    setUrl(lastSegment);
+  }, [open, nodes, contents]);
 
   const handleClose = useCallback(() => {
-    setShow(false)
-    onClose()
-  }, [onClose])
+    setShow(false);
+    onClose();
+  }, [onClose]);
 
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (modal.current && !modal.current.contains(event.target)) {
-        setShow(false)
-        onClose()
+        setShow(false);
+        onClose();
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [onClose])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
   const handleTitleChange = useCallback(
     ({ target: { value } }) => setTitle(value),
-    []
-  )
+    [],
+  );
 
   const handleSave = async () => {
-    let file_path = ''
-    const node = nodes.find(({ id }) => id === open)
-    const response = await AddTrigger(node?.type, title, content, file)
-    if (response['file_path']) {
-      file_path = response['file_path']
+    let file_path = "";
+    const node = nodes.find(({ id }) => id === open);
+    const response = await AddTrigger(node?.type, title, content, file);
+    if (response["file_path"]) {
+      file_path = response["file_path"];
     }
     setContents({
       ...contents,
-      [open]: { ...contents[open], title, content, file: file_path }
-    })
-    setShow(false)
-    onClose()
-  }
+      [open]: { ...contents[open], title, content, file: file_path },
+    });
+    setShow(false);
+    onClose();
+  };
 
   const handleFileChange = async ({ target: { files: newfiles } }) => {
-    const file = newfiles[0]
-    setFile(file)
-  }
+    const file = newfiles[0];
+    setFile(file);
+  };
 
   return (
     <div
       className={clsx(
-        'fixed top-0 left-0 w-screen h-screen bg-[#0003] animate-fadeIn',
-        { 'animate-fadeOut': !show }
+        "fixed top-0 left-0 w-screen h-screen bg-[#0003] animate-fadeIn",
+        { "animate-fadeOut": !show },
       )}
     >
       <div
         className={clsx(
-          'absolute top-24 right-4 w-96 rounded-lg shadow-[0_2px_8px_#0008] animate-right-modal-in',
-          { 'animate-right-modal-out': !show }
+          "absolute top-24 right-4 w-96 rounded-lg shadow-[0_2px_8px_#0008] animate-right-modal-in",
+          { "animate-right-modal-out": !show },
         )}
         ref={modal}
       >
@@ -213,16 +213,16 @@ const RightSidePanel = ({ open }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RightSidePanel
+export default RightSidePanel;
 
 const TextContent = ({ content, setContent }) => {
-  const [hover, setHover] = useState(false)
+  const [hover, setHover] = useState(false);
 
-  const handleHover = useCallback(() => setHover(true), [])
-  const handleClearHover = useCallback(() => setHover(false), [])
+  const handleHover = useCallback(() => setHover(true), []);
+  const handleClearHover = useCallback(() => setHover(false), []);
 
   return (
     <div
@@ -235,7 +235,7 @@ const TextContent = ({ content, setContent }) => {
         placeholder=""
         rows={3}
         value={content}
-        onChange={e => setContent(e.target.value)}
+        onChange={(e) => setContent(e.target.value)}
       ></textarea>
       {hover && (
         <div className="absolute -left-4 top-0 h-full flex flex-col items-center justify-center gap-2 animate-fadeIn">
@@ -248,5 +248,5 @@ const TextContent = ({ content, setContent }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

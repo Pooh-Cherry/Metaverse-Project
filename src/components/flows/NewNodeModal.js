@@ -1,67 +1,67 @@
-import { useFlow } from '@contexts/FlowContext'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useFlow } from "@contexts/FlowContext";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 function generateRandomId(length = 10) {
   const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  let result = ''
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
 
   for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length)
-    result += characters[randomIndex]
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
   }
 
-  return result
+  return result;
 }
 
 const NewNodeModal = ({ parent, onClose }) => {
-  const { nodes, setNodes, edges, setEdges } = useFlow()
-  const modal = useRef(null)
+  const { nodes, setNodes, edges, setEdges } = useFlow();
+  const modal = useRef(null);
 
-  const [hover, setHover] = useState(false)
+  const [hover, setHover] = useState(false);
 
-  const handleHover = useCallback(() => setHover(true), [])
-  const handleClearHover = useCallback(() => setHover(false), [])
+  const handleHover = useCallback(() => setHover(true), []);
+  const handleClearHover = useCallback(() => setHover(false), []);
 
   useEffect(() => {
-    if (hover) return
+    if (hover) return;
     const timer = setTimeout(() => {
-      onClose(false)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [hover, onClose])
+      onClose(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [hover, onClose]);
 
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (modal.current && !modal.current.contains(event.target)) {
-        onClose(false)
+        onClose(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [onClose])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
-  const handleClick = type => {
-    const id = generateRandomId()
-    const _parent = nodes.find(({ id }) => id === parent)
+  const handleClick = (type) => {
+    const id = generateRandomId();
+    const _parent = nodes.find(({ id }) => id === parent);
     if (_parent) {
       const newNode = {
         id,
         type,
         position: { x: _parent.position.x + 300, y: _parent.position.y },
-        data: {}
-      }
-      setNodes([...nodes, newNode])
+        data: {},
+      };
+      setNodes([...nodes, newNode]);
       setEdges([
         ...edges,
-        { id: generateRandomId(), source: parent, target: id }
-      ])
+        { id: generateRandomId(), source: parent, target: id },
+      ]);
     }
 
-    onClose(false)
-  }
+    onClose(false);
+  };
 
   return (
     <div
@@ -70,23 +70,23 @@ const NewNodeModal = ({ parent, onClose }) => {
       onMouseOver={handleHover}
       onMouseLeave={handleClearHover}
     >
-      <NewItem title={'Bot response'} type={'welcome'} onClick={handleClick} />
-      <NewItem title={'Contact Us'} type={'contact_us'} onClick={handleClick} />
+      <NewItem title={"Bot response"} type={"welcome"} onClick={handleClick} />
+      <NewItem title={"Contact Us"} type={"contact_us"} onClick={handleClick} />
       <NewItem
-        title={'Default Fallback'}
-        type={'fallback'}
+        title={"Default Fallback"}
+        type={"fallback"}
         onClick={handleClick}
       />
-      <NewItem title={'FAQ'} type={'faq'} onClick={handleClick} />
+      <NewItem title={"FAQ"} type={"faq"} onClick={handleClick} />
     </div>
-  )
-}
+  );
+};
 
 const NewItem = ({ title, icon, type, onClick }) => {
-  const handleClick = e => {
-    e.stopPropagation()
-    onClick(type)
-  }
+  const handleClick = (e) => {
+    e.stopPropagation();
+    onClick(type);
+  };
 
   return (
     <div
@@ -95,7 +95,7 @@ const NewItem = ({ title, icon, type, onClick }) => {
     >
       <span>{title}</span>
     </div>
-  )
-}
+  );
+};
 
-export default NewNodeModal
+export default NewNodeModal;

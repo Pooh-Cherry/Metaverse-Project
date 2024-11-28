@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-const useOnScreen = ref => {
-  const [isIntersecting, setIntersecting] = useState(false)
+const useOnScreen = (ref) => {
+  const [isIntersecting, setIntersecting] = useState(false);
 
   useEffect(() => {
-    const currentRef = ref.current
+    const currentRef = ref.current;
     const observer = new IntersectionObserver(
       ([entry]) => setIntersecting(entry.isIntersecting),
       {
         root: null, // Use the browser viewport as the container
-        rootMargin: '0px',
-        threshold: 0.1 // Trigger when at least 10% of the target is visible
-      }
-    )
+        rootMargin: "0px",
+        threshold: 0.1, // Trigger when at least 10% of the target is visible
+      },
+    );
 
     if (currentRef) {
-      observer.observe(currentRef)
+      observer.observe(currentRef);
     }
 
     return () => {
       if (currentRef) {
-        observer.unobserve(currentRef)
+        observer.unobserve(currentRef);
       }
-    }
-  }, [ref])
+    };
+  }, [ref]);
 
-  return isIntersecting
-}
+  return isIntersecting;
+};
 
-export default useOnScreen
+export default useOnScreen;

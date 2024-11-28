@@ -1,37 +1,37 @@
 // import SearchIcon from "@icons/Search";
-import clsx from 'clsx'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { getResources } from '../apis'
+import clsx from "clsx";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getResources } from "../apis";
 
 const Embeddings = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [resources, setResources] = useState({
     url: [],
     file: [],
-    content: []
-  })
-  const [index, setIndex] = useState('url')
+    content: [],
+  });
+  const [index, setIndex] = useState("url");
 
   const fetchResources = async () => {
-    const response = await getResources()
-    const resources = response.resources
-    setResources(resources)
-  }
+    const response = await getResources();
+    const resources = response.resources;
+    setResources(resources);
+  };
 
-  const setStatus = index => {
+  const setStatus = (index) => {
     if (index === 0) {
-      setIndex('url')
+      setIndex("url");
     } else if (index === 1) {
-      setIndex('file')
+      setIndex("file");
     } else {
-      setIndex('content')
+      setIndex("content");
     }
-  }
+  };
 
   useEffect(() => {
-    fetchResources()
-  }, [])
+    fetchResources();
+  }, []);
 
   return (
     <div className="h-screen min-h-screen max-h-screen w-screen p-1 sm:pl-[78px] pt-[78px]">
@@ -66,9 +66,9 @@ const Embeddings = () => {
                   </button> */}
                 </div>
                 <Sidebar
-                  url={resources['url']}
-                  file={resources['file']}
-                  content={resources['content']}
+                  url={resources["url"]}
+                  file={resources["file"]}
+                  content={resources["content"]}
                   setStatus={setStatus}
                 />
               </div>
@@ -110,7 +110,7 @@ const Embeddings = () => {
                     </button> */}
                       <button
                         className="px-4 py-1 bg-[#22272d] text-white rounded-lg"
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate("/")}
                       >
                         + Add content
                       </button>
@@ -121,7 +121,7 @@ const Embeddings = () => {
               {resources[index].length !== 0 && (
                 <div
                   className="w-full overflow-scroll mt-6"
-                  style={{ minHeight: '70vh', overflowY: 'scroll' }}
+                  style={{ minHeight: "70vh", overflowY: "scroll" }}
                 >
                   <table className="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 p-6">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -145,7 +145,7 @@ const Embeddings = () => {
                           key={index}
                         >
                           <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {row['title']}
+                            {row["title"]}
                           </th>
                           <td className="px-6 py-4">
                             <span className="bg-green-100 text-green-800 py-1 px-3 rounded-full text-xs font-semibold">
@@ -163,24 +163,24 @@ const Embeddings = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Embeddings
+export default Embeddings;
 
 const Sidebar = ({ url, file, content, setStatus }) => {
   const menus = [
-    { title: 'Websites', count: url.length, disabled: false, note: '' },
-    { title: 'Docs', count: file.length, disabled: false, note: '' },
-    { title: 'Text', count: content.length, disabled: false, note: '' }
-  ]
+    { title: "Websites", count: url.length, disabled: false, note: "" },
+    { title: "Docs", count: file.length, disabled: false, note: "" },
+    { title: "Text", count: content.length, disabled: false, note: "" },
+  ];
 
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(0);
 
-  const handleClick = useCallback(param => {
-    setActive(param)
-    setStatus(param)
-  }, [])
+  const handleClick = useCallback((param) => {
+    setActive(param);
+    setStatus(param);
+  }, []);
 
   return (
     <>
@@ -194,8 +194,8 @@ const Sidebar = ({ url, file, content, setStatus }) => {
         />
       ))}
     </>
-  )
-}
+  );
+};
 
 const SidebarItem = ({
   active,
@@ -204,16 +204,16 @@ const SidebarItem = ({
   count,
   disabled,
   note,
-  onClick
+  onClick,
 }) => {
-  const handleClick = useCallback(() => onClick(index), [index, onClick])
+  const handleClick = useCallback(() => onClick(index), [index, onClick]);
 
   return (
     <div
-      className={clsx('pl-6 pr-4 py-2 flex justify-between rounded-xl', {
-        'bg-[#F5F5F5] text-[#006cff]': active === index,
-        'text-[#919ead]': disabled,
-        'cursor-pointer hover:bg-[#F5F5F5] transition-all': !disabled
+      className={clsx("pl-6 pr-4 py-2 flex justify-between rounded-xl", {
+        "bg-[#F5F5F5] text-[#006cff]": active === index,
+        "text-[#919ead]": disabled,
+        "cursor-pointer hover:bg-[#F5F5F5] transition-all": !disabled,
       })}
       onClick={handleClick}
     >
@@ -225,5 +225,5 @@ const SidebarItem = ({
         {!disabled && <div className="text-[#919ead]">{count}</div>}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,154 +1,154 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { SERVER_ADDRESS } from '@constants/config'
-import { AddURL, TrainURL, TrainContent, TrainQA } from '../apis'
+import React, { useState } from "react";
+import axios from "axios";
+import { SERVER_ADDRESS } from "@constants/config";
+import { AddURL, TrainURL, TrainContent, TrainQA } from "../apis";
 
 const List = () => {
-  const [activeTab, setActiveTab] = useState(0)
-  const [url, setUrl] = useState('')
-  const [content, setContent] = useState('')
-  const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
-  const [qa, setQA] = useState([])
-  const [links, setLinks] = useState([])
-  const [files, setFiles] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [msg, setMsg] = useState('Fetching links...')
-  const [checkedLinks, setCheckedLinks] = useState([])
-  const [checkedFiles, setCheckedFiles] = useState([])
+  const [activeTab, setActiveTab] = useState(0);
+  const [url, setUrl] = useState("");
+  const [content, setContent] = useState("");
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [qa, setQA] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("Fetching links...");
+  const [checkedLinks, setCheckedLinks] = useState([]);
+  const [checkedFiles, setCheckedFiles] = useState([]);
 
-  const handleCheckboxChange = link => {
-    setCheckedLinks(prevCheckedLinks => {
+  const handleCheckboxChange = (link) => {
+    setCheckedLinks((prevCheckedLinks) => {
       if (prevCheckedLinks.includes(link)) {
         // If already checked, remove it from the array
-        return prevCheckedLinks.filter(checkedLink => checkedLink !== link)
+        return prevCheckedLinks.filter((checkedLink) => checkedLink !== link);
       } else {
         // If not checked, add it to the array
-        return [...prevCheckedLinks, link]
+        return [...prevCheckedLinks, link];
       }
-    })
-  }
+    });
+  };
 
-  const handleCheckboxChangeWithfile = file => {
-    setCheckedFiles(prevCheckFiles => {
+  const handleCheckboxChangeWithfile = (file) => {
+    setCheckedFiles((prevCheckFiles) => {
       if (prevCheckFiles.includes(file)) {
         // If already checked, remove it from the array
-        return prevCheckFiles.filter(checkedFile => checkedFile !== file)
+        return prevCheckFiles.filter((checkedFile) => checkedFile !== file);
       } else {
         // If not checked, add it to the array
-        return [...prevCheckFiles, file]
+        return [...prevCheckFiles, file];
       }
-    })
-  }
+    });
+  };
 
   const fetchLinks = async () => {
     try {
       if (url) {
-        setCheckedLinks([])
-        setMsg('Fetching links...')
-        setLoading(true)
+        setCheckedLinks([]);
+        setMsg("Fetching links...");
+        setLoading(true);
 
-        let processedUrl = url.startsWith('https://') ? url : `https://${url}`
+        let processedUrl = url.startsWith("https://") ? url : `https://${url}`;
 
-        const response = await AddURL(processedUrl.trim())
-        setLinks(response.links)
-        setLoading(false)
+        const response = await AddURL(processedUrl.trim());
+        setLinks(response.links);
+        setLoading(false);
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
 
   const handleFileChange = async ({ target: { files: newfiles } }) => {
-    setCheckedFiles([])
-    const selectedFiles = [...newfiles]
-    console.log(selectedFiles)
-    setFiles([...files, ...selectedFiles])
-  }
+    setCheckedFiles([]);
+    const selectedFiles = [...newfiles];
+    console.log(selectedFiles);
+    setFiles([...files, ...selectedFiles]);
+  };
 
   const updateFilesKnowledge = async () => {
     if (checkedFiles.length !== 0) {
-      const formData = new FormData()
+      const formData = new FormData();
 
       checkedFiles.forEach((file, index) => {
-        formData.append(`file_${index}`, file)
-      })
+        formData.append(`file_${index}`, file);
+      });
 
       try {
         const response = await axios.post(
-          SERVER_ADDRESS + '/api/upload-resource',
+          SERVER_ADDRESS + "/api/upload-resource",
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        )
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
 
-        console.log(response.data)
+        console.log(response.data);
 
         if (response.status === 200) {
-          console.log('Files uploaded successfully', checkedFiles)
+          console.log("Files uploaded successfully", checkedFiles);
         } else {
-          console.error('Error uploading files')
+          console.error("Error uploading files");
         }
       } catch (error) {
-        console.error('Error:', error)
+        console.error("Error:", error);
       }
     }
-  }
+  };
 
   const updateKnowledge = async () => {
     try {
       if (checkedLinks.length !== 0) {
-        await TrainURL(checkedLinks, url)
+        await TrainURL(checkedLinks, url);
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
 
   const updateContentKnowledge = async () => {
     try {
-      if (content !== '') {
-        await TrainContent(content)
+      if (content !== "") {
+        await TrainContent(content);
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
 
   const updateQAKnowledge = async () => {
     try {
       if (qa.length !== 0) {
-        await TrainQA(qa)
+        await TrainQA(qa);
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
 
   const update = async () => {
-    setMsg('Updating knowledgebase...')
-    setLoading(true)
-    await updateKnowledge()
-    await updateFilesKnowledge()
-    await updateContentKnowledge()
-    await updateQAKnowledge()
-    setLoading(false)
-  }
+    setMsg("Updating knowledgebase...");
+    setLoading(true);
+    await updateKnowledge();
+    await updateFilesKnowledge();
+    await updateContentKnowledge();
+    await updateQAKnowledge();
+    setLoading(false);
+  };
 
   const insertFAQ = async () => {
-    if (question !== '' && answer !== '') {
-      setQA([...qa, { question: question, answer: answer }])
-      setQuestion('')
-      setAnswer('')
+    if (question !== "" && answer !== "") {
+      setQA([...qa, { question: question, answer: answer }]);
+      setQuestion("");
+      setAnswer("");
     }
-  }
+  };
 
   const tabContent = [
     {
-      title: 'Website Links',
+      title: "Website Links",
       content: (
         <div className="w-full">
           <div className="mt-4 flex items-center gap-4">
@@ -157,7 +157,7 @@ const List = () => {
               placeholder="https://chillincheetah.ca"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
               value={url}
-              onChange={e => setUrl(e.target.value)}
+              onChange={(e) => setUrl(e.target.value)}
             />
             <button
               className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700"
@@ -173,7 +173,7 @@ const List = () => {
 
           <div
             className="w-full overflow-scroll"
-            style={{ maxHeight: '50vh', overflowY: 'scroll' }}
+            style={{ maxHeight: "50vh", overflowY: "scroll" }}
           >
             <table className="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 p-6">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -220,10 +220,10 @@ const List = () => {
             <span>{links.length} pages found</span>
           </div>
         </div>
-      )
+      ),
     },
     {
-      title: 'Documents',
+      title: "Documents",
       content: (
         <div className="mb-4 px-6">
           <label
@@ -274,7 +274,7 @@ const List = () => {
 
           <div
             className="w-full overflow-scroll"
-            style={{ maxHeight: '50vh', overflowY: 'scroll' }}
+            style={{ maxHeight: "50vh", overflowY: "scroll" }}
           >
             <table className="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 p-6">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -321,17 +321,17 @@ const List = () => {
             <span>{files.length} files found</span>
           </div>
         </div>
-      )
+      ),
     },
     {
-      title: 'Text',
+      title: "Text",
       content: (
         <div className="relative w-full min-w-[200px]">
           <label>Here you can add description</label>
           <textarea
             className="mt-2 mb-4 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder=""
-            onChange={e => setContent(e.target.value)}
+            onChange={(e) => setContent(e.target.value)}
             rows={15}
             value={content}
           ></textarea>
@@ -339,10 +339,10 @@ const List = () => {
             <span></span>
           </div>
         </div>
-      )
+      ),
     },
     {
-      title: 'FAQs',
+      title: "FAQs",
       content: (
         <div className="relative w-full min-w-[200px]">
           <select
@@ -350,7 +350,7 @@ const List = () => {
             className="mb-4 mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
             {qa.map((item, index) => (
-              <option key={index}>{item['question']}</option>
+              <option key={index}>{item["question"]}</option>
             ))}
           </select>
           <label>Question</label>
@@ -359,13 +359,13 @@ const List = () => {
             placeholder=""
             className="mb-4 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             value={question}
-            onChange={e => setQuestion(e.target.value)}
+            onChange={(e) => setQuestion(e.target.value)}
           />
           <label>Answer</label>
           <textarea
             className="mb-4 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder=""
-            onChange={e => setAnswer(e.target.value)}
+            onChange={(e) => setAnswer(e.target.value)}
             rows={15}
             value={answer}
           ></textarea>
@@ -374,16 +374,16 @@ const List = () => {
             <button
               className="text-indigo-400"
               onClick={() => {
-                insertFAQ()
+                insertFAQ();
               }}
             >
               Add FAQ +
             </button>
           </div>
         </div>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <div className="relative sm:pl-[74px] pt-[74px]">
@@ -405,8 +405,8 @@ const List = () => {
                   onClick={() => setActiveTab(index)}
                   className={`py-2 px-4 font-medium focus:outline-none ${
                     activeTab === index
-                      ? 'text-indigo-600 border-b-2 border-indigo-600'
-                      : 'text-gray-500 hover:text-indigo-600'
+                      ? "text-indigo-600 border-b-2 border-indigo-600"
+                      : "text-gray-500 hover:text-indigo-600"
                   }`}
                 >
                   {tab.title}
@@ -432,7 +432,7 @@ const List = () => {
       {loading && (
         <div
           className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center"
-          style={{ background: 'rgb(0,0,0,0.3)' }}
+          style={{ background: "rgb(0,0,0,0.3)" }}
         >
           <div className="bg-white border py-2 px-5 rounded-lg flex items-center flex-col">
             <div className="loader-dots block relative w-20 h-5 mt-2">
@@ -448,7 +448,7 @@ const List = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default List
+export default List;

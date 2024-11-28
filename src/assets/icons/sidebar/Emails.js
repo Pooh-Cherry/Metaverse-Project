@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const EmailsIcon = ({ width = 24, height = 25, color = '#E2E8F0' }) => {
+const EmailsIcon = ({ width = 24, height = 25, color = "#E2E8F0" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const EmailsIcon = ({ width = 24, height = 25, color = '#E2E8F0' }) => {
         Email
       </text>
     </svg>
-  )
-}
+  );
+};
 
-export default EmailsIcon
+export default EmailsIcon;

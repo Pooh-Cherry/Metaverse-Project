@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const CloseSidebarIcon = ({ width = 15, height = 72, color = '#E2E8F0' }) => {
+const CloseSidebarIcon = ({ width = 15, height = 72, color = "#E2E8F0" }) => {
   return (
     <svg
       width={width}
@@ -17,7 +17,7 @@ const CloseSidebarIcon = ({ width = 15, height = 72, color = '#E2E8F0' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default CloseSidebarIcon
+export default CloseSidebarIcon;

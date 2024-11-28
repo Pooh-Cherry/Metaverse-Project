@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const MarkIcon = ({ width = 36, height = 41, color = '#2B2929' }) => {
+const MarkIcon = ({ width = 36, height = 41, color = "#2B2929" }) => {
   return (
     <svg
       width={width}
@@ -14,7 +14,7 @@ const MarkIcon = ({ width = 36, height = 41, color = '#2B2929' }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default MarkIcon
+export default MarkIcon;

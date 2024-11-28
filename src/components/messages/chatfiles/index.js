@@ -1,32 +1,32 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import moment from 'moment'
-import ChatFilesModal from './modal'
-import { Mp4Icon, DocumentIcon } from '@icons'
-import { sizeDecoration } from '@helpers'
-import { useAuth } from '@contexts/AuthContext'
-import { SERVER_ADDRESS } from '@constants/config'
+import React, { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import ChatFilesModal from "./modal";
+import { Mp4Icon, DocumentIcon } from "@icons";
+import { sizeDecoration } from "@helpers";
+import { useAuth } from "@contexts/AuthContext";
+import { SERVER_ADDRESS } from "@constants/config";
 
 const ChatFilesPanel = () => {
-  const { isAdmin } = useAuth()
-  const { attachments, selectedUser } = useSelector(state => state.message)
+  const { isAdmin } = useAuth();
+  const { attachments, selectedUser } = useSelector((state) => state.message);
 
   const _attachments = useMemo(() => {
     if (isAdmin) {
       if (selectedUser) {
         return attachments.filter(
-          item => item.room === selectedUser && item.type === 'file'
-        )
+          (item) => item.room === selectedUser && item.type === "file",
+        );
       }
-      return []
+      return [];
     }
-    return (attachments || []).filter(item => item.type === 'file')
-  }, [isAdmin, attachments, selectedUser])
+    return (attachments || []).filter((item) => item.type === "file");
+  }, [isAdmin, attachments, selectedUser]);
 
-  const [viewAll, setViewAll] = useState(false)
+  const [viewAll, setViewAll] = useState(false);
 
-  const handleClickViewAll = useCallback(() => setViewAll(true), [])
-  const handleCloseViewAll = useCallback(() => setViewAll(false), [])
+  const handleClickViewAll = useCallback(() => setViewAll(true), []);
+  const handleCloseViewAll = useCallback(() => setViewAll(false), []);
 
   return (
     <>
@@ -51,30 +51,30 @@ const ChatFilesPanel = () => {
                   createdAt={moment
                     .utc(item.created_at)
                     .local()
-                    .format('D MMMM YYYY')}
+                    .format("D MMMM YYYY")}
                 />
-              )
+              ),
           )}
       </div>
       {viewAll && (
         <ChatFilesModal show={viewAll} onClose={handleCloseViewAll} />
       )}
     </>
-  )
-}
+  );
+};
 
-export default ChatFilesPanel
+export default ChatFilesPanel;
 
 const ChatFileItem = ({ size, createdAt, url }) => {
-  const title = url.substring(url.indexOf('-') + 1)
-  const type = url.substring(url.lastIndexOf('.') + 1)
+  const title = url.substring(url.indexOf("-") + 1);
+  const type = url.substring(url.lastIndexOf(".") + 1);
 
   return (
     <div className="h-[64px] flex items-center px-3 gap-3">
       <div className="w-12 min-w-12 h-12 rounded-[24px] bg-[#F1F5F9] flex justify-center items-center">
-        {type === 'mp4' && <Mp4Icon />}
-        {type === 'doc' && <DocumentIcon />}
-        {!(type === 'mp4' || type === 'doc') && (
+        {type === "mp4" && <Mp4Icon />}
+        {type === "doc" && <DocumentIcon />}
+        {!(type === "mp4" || type === "doc") && (
           <span className="font-bold capitalize">{type}</span>
         )}
       </div>
@@ -94,5 +94,5 @@ const ChatFileItem = ({ size, createdAt, url }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

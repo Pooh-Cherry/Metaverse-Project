@@ -1,3 +1,3 @@
-import AnimTypingIcon from './AnimTyping'
+import AnimTypingIcon from "./AnimTyping";
 
-export { AnimTypingIcon }
+export { AnimTypingIcon };

@@ -1,7 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Handle, Position } from '@xyflow/react'
-import clsx from 'clsx'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Handle, Position } from "@xyflow/react";
+import clsx from "clsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faComment,
@@ -10,46 +16,46 @@ import {
   faHome,
   faMailBulk,
   faPaperPlane,
-  faPlus
-} from '@fortawesome/free-solid-svg-icons'
-import NewNodeModal from './NewNodeModal'
-import { useFlow } from '@contexts/FlowContext'
-import MenuModal from './MenuModal'
-import { useNavigate } from 'react-router-dom'
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import NewNodeModal from "./NewNodeModal";
+import { useFlow } from "@contexts/FlowContext";
+import MenuModal from "./MenuModal";
+import { useNavigate } from "react-router-dom";
 
 export const NODE_LABELS = {
-  start: 'Start Point',
-  welcome: 'Bot Response',
-  contact_us: 'Contact Us',
-  faq: 'FAQ',
-  fallback: 'Default Fallback'
-}
+  start: "Start Point",
+  welcome: "Bot Response",
+  contact_us: "Contact Us",
+  faq: "FAQ",
+  fallback: "Default Fallback",
+};
 
 const BasicNode = ({
   isConnectable,
-  source = 'Right',
-  target = 'Left',
+  source = "Right",
+  target = "Left",
   start = false,
   type,
-  id
+  id,
 }) => {
-  const label = NODE_LABELS[type]
-  const { setType, trigger, contents } = useFlow()
-  const [hover, setHover] = useState(false)
-  const [newOpen, setNewOpen] = useState(false)
-  const [edit, setEdit] = useState(false)
-  const [menu, setMenu] = useState(false)
-  const title = useMemo(() => contents[id]?.title || '', [contents, id])
+  const label = NODE_LABELS[type];
+  const { setType, trigger, contents } = useFlow();
+  const [hover, setHover] = useState(false);
+  const [newOpen, setNewOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const title = useMemo(() => contents[id]?.title || "", [contents, id]);
 
-  const handleHover = useCallback(() => setHover(true), [])
-  const handleClearHover = useCallback(() => setHover(false), [])
+  const handleHover = useCallback(() => setHover(true), []);
+  const handleClearHover = useCallback(() => setHover(false), []);
 
-  const handleClickAdd = useCallback(e => {
-    e.stopPropagation()
-    setNewOpen(true)
-  }, [])
+  const handleClickAdd = useCallback((e) => {
+    e.stopPropagation();
+    setNewOpen(true);
+  }, []);
 
-  const handleOpenMenu = useCallback(() => setMenu(true), [])
+  const handleOpenMenu = useCallback(() => setMenu(true), []);
 
   return (
     <>
@@ -73,8 +79,8 @@ const BasicNode = ({
           />
         )}
         <div
-          className={clsx('flex justify-center font-bold', {
-            'h-full items-center': !trigger[id]
+          className={clsx("flex justify-center font-bold", {
+            "h-full items-center": !trigger[id],
           })}
         >
           {label}
@@ -96,7 +102,7 @@ const BasicNode = ({
         {(edit || hover) && !start && (
           <div
             className="absolute -top-12 right-0 h-12 text-[#666]"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex shadow-[0_0_8px_#0004] rounded-lg bg-white border">
               <EditName node={id} edit={edit} setEdit={setEdit} />
@@ -120,38 +126,38 @@ const BasicNode = ({
       {newOpen && <NewNodeModal parent={id} onClose={setNewOpen} />}
       {menu && <MenuModal parent={id} onClose={setMenu} />}
     </>
-  )
-}
+  );
+};
 
 const EditName = ({ node, edit, setEdit }) => {
-  const { contents, setContents } = useFlow()
-  const [originalTitle, setOriginalTitle] = useState('')
-  const [title, setTitle] = useState('')
+  const { contents, setContents } = useFlow();
+  const [originalTitle, setOriginalTitle] = useState("");
+  const [title, setTitle] = useState("");
 
-  const handleClickEdit = useCallback(() => setEdit(true), [])
+  const handleClickEdit = useCallback(() => setEdit(true), []);
 
   useEffect(() => {
-    const _title = contents[node]?.title || ''
-    setOriginalTitle(_title)
-    setTitle(_title)
-  }, [contents, node])
+    const _title = contents[node]?.title || "";
+    setOriginalTitle(_title);
+    setTitle(_title);
+  }, [contents, node]);
 
   const handleChange = useCallback(
     ({ target: { value } }) => setTitle(value),
-    []
-  )
+    [],
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (originalTitle !== title) {
-        setContents({ ...contents, [node]: { ...contents[node], title } })
+        setContents({ ...contents, [node]: { ...contents[node], title } });
       }
-      setEdit(false)
-    }, 3000)
+      setEdit(false);
+    }, 3000);
     return () => {
-      clearTimeout(timer)
-    }
-  }, [setContents, node, title, setEdit, originalTitle])
+      clearTimeout(timer);
+    };
+  }, [setContents, node, title, setEdit, originalTitle]);
 
   return (
     <>
@@ -168,40 +174,40 @@ const EditName = ({ node, edit, setEdit }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
 const ToolTipModal = ({ onClick }) => {
-  const modal = useRef(null)
+  const modal = useRef(null);
 
-  const [hover, setHover] = useState(false)
+  const [hover, setHover] = useState(false);
 
-  const handleHover = useCallback(() => setHover(true), [])
-  const handleClearHover = useCallback(() => setHover(false), [])
+  const handleHover = useCallback(() => setHover(true), []);
+  const handleClearHover = useCallback(() => setHover(false), []);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (hover) return
+    if (hover) return;
     const timer = setTimeout(() => {
-      onClick(false)
-    }, 3000)
-    return () => clearTimeout(timer)
-  }, [hover, onClick])
+      onClick(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [hover, onClick]);
 
-  const handleClick = useCallback(() => onClick(false), [onClick])
+  const handleClick = useCallback(() => onClick(false), [onClick]);
 
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (modal.current && !modal.current.contains(event.target)) {
-        onClick(false)
+        onClick(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [onClick])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClick]);
 
   return (
     <div
@@ -216,13 +222,13 @@ const ToolTipModal = ({ onClick }) => {
       </div>
       <button
         className="bg-white rounded-lg px-2 py-1"
-        onClick={() => navigate('/embeddings')}
+        onClick={() => navigate("/embeddings")}
       >
         Edit AI Knowledge
       </button>
     </div>
-  )
-}
+  );
+};
 
 const StartNode = ({ id, ...rest }) => {
   // const [showToolTip, setShowToopTip] = useState(false)
@@ -242,8 +248,8 @@ const StartNode = ({ id, ...rest }) => {
       </div>
       {/* {showToolTip && <ToolTipModal onClick={setShowToopTip} />} */}
     </>
-  )
-}
+  );
+};
 
 const FaqNode = ({ id, ...rest }) => {
   // const [showToolTip, setShowToopTip] = useState(false)
@@ -263,15 +269,15 @@ const FaqNode = ({ id, ...rest }) => {
       </div>
       {/* {showToolTip && <ToolTipModal onClick={setShowToopTip} />} */}
     </>
-  )
-}
+  );
+};
 
 const ContactNode = ({ id, ...rest }) => {
-  const [showToolTip, setShowToopTip] = useState(false)
+  const [showToolTip, setShowToopTip] = useState(false);
   const handleClick = useCallback(
     () => setShowToopTip(!showToolTip),
-    [showToolTip]
-  )
+    [showToolTip],
+  );
 
   return (
     <>
@@ -284,12 +290,12 @@ const ContactNode = ({ id, ...rest }) => {
       </div>
       {showToolTip && <ToolTipModal onClick={setShowToopTip} />}
     </>
-  )
-}
+  );
+};
 
 const WelcomeNode = ({ id, ...rest }) => {
-  const { setMenuOpen } = useFlow()
-  const handleClick = () => setMenuOpen(id)
+  const { setMenuOpen } = useFlow();
+  const handleClick = () => setMenuOpen(id);
 
   return (
     <div
@@ -299,12 +305,12 @@ const WelcomeNode = ({ id, ...rest }) => {
       <FontAwesomeIcon icon={faPaperPlane} />
       <BasicNode id={id} {...rest} />
     </div>
-  )
-}
+  );
+};
 
 const FallbackNode = ({ id, ...rest }) => {
-  const { setMenuOpen } = useFlow()
-  const handleClick = () => setMenuOpen(id)
+  const { setMenuOpen } = useFlow();
+  const handleClick = () => setMenuOpen(id);
 
   return (
     <div
@@ -314,7 +320,7 @@ const FallbackNode = ({ id, ...rest }) => {
       <FontAwesomeIcon icon={faHome} />
       <BasicNode id={id} {...rest} />
     </div>
-  )
-}
+  );
+};
 
-export { StartNode, FaqNode, WelcomeNode, ContactNode, FallbackNode }
+export { StartNode, FaqNode, WelcomeNode, ContactNode, FallbackNode };

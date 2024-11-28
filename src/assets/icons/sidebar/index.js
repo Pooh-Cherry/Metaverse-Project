@@ -1,12 +1,12 @@
-import CloseSidebarIcon from './CloseSidebar'
-import DashboardIcon from './Dashboard'
-import MessagesIcon from './Messages'
-import OpenSidebarIcon from './OpenSidebar'
-import PartIcon from './Part'
-import SupportIcon from './Support'
-import UsersIcon from './Users'
-import EmailsIcon from './Emails'
-import ListIcon from './List'
+import CloseSidebarIcon from "./CloseSidebar";
+import DashboardIcon from "./Dashboard";
+import MessagesIcon from "./Messages";
+import OpenSidebarIcon from "./OpenSidebar";
+import PartIcon from "./Part";
+import SupportIcon from "./Support";
+import UsersIcon from "./Users";
+import EmailsIcon from "./Emails";
+import ListIcon from "./List";
 
 export {
   CloseSidebarIcon,
@@ -17,5 +17,5 @@ export {
   SupportIcon,
   UsersIcon,
   EmailsIcon,
-  ListIcon
-}
+  ListIcon,
+};

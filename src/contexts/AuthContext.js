@@ -1,12 +1,12 @@
-import React, { createContext, useContext } from 'react'
-import { useSelector } from 'react-redux'
+import React, { createContext, useContext } from "react";
+import { useSelector } from "react-redux";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const auth = useSelector(state => state.auth)
+  const auth = useSelector((state) => state.auth);
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-}
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+};
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

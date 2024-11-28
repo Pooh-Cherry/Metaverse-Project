@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const DownloadIcon = ({ width = 26, height = 26, color = '#242222' }) => {
+const DownloadIcon = ({ width = 26, height = 26, color = "#242222" }) => {
   return (
     <svg
       width={width}
@@ -31,7 +31,7 @@ const DownloadIcon = ({ width = 26, height = 26, color = '#242222' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default DownloadIcon
+export default DownloadIcon;

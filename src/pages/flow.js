@@ -1,6 +1,6 @@
-import { FlowProvider } from '@contexts/FlowContext'
-import React from 'react'
-import Flow from '../components/flows'
+import { FlowProvider } from "@contexts/FlowContext";
+import React from "react";
+import Flow from "../components/flows";
 
 const FlowChart = () => {
   return (
@@ -9,7 +9,7 @@ const FlowChart = () => {
         <Flow />
       </FlowProvider>
     </>
-  )
-}
+  );
+};
 
-export default FlowChart
+export default FlowChart;

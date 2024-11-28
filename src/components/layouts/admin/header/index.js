@@ -1,25 +1,25 @@
-import React, { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import clsx from 'clsx'
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import clsx from "clsx";
 
-import { useAuth } from '@contexts/AuthContext'
-import { logout } from '@redux/authSlice'
-import { useWebSocket } from '@contexts/WebSocketContext'
-import { BellIcon, DownVectorIcon, MarkIcon } from '@icons'
+import { useAuth } from "@contexts/AuthContext";
+import { logout } from "@redux/authSlice";
+import { useWebSocket } from "@contexts/WebSocketContext";
+import { BellIcon, DownVectorIcon, MarkIcon } from "@icons";
 
 const Header = () => {
-  const user = useAuth()
+  const user = useAuth();
 
   return (
     user.isAuthenticated && (
       <div
         className={clsx(
-          'fixed top-0 left-0',
-          'w-screen h-[74px]',
-          'border border-[#F4F7FE]',
-          'bg-white',
-          'shadow-[0_1px_2px_#0000000F,0_1px_3px_#0000001A]',
-          'px-8 z-20'
+          "fixed top-0 left-0",
+          "w-screen h-[74px]",
+          "border border-[#F4F7FE]",
+          "bg-white",
+          "shadow-[0_1px_2px_#0000000F,0_1px_3px_#0000001A]",
+          "px-8 z-20",
         )}
       >
         <div className="w-full h-full flex justify-between items-center">
@@ -33,7 +33,7 @@ const Header = () => {
             </div> */}
             <div className="flex items-center">
               <div className="px-3 flex flex-col items-end">
-                <div className="text-[20px] font-bold">{'Admin'}</div>
+                <div className="text-[20px] font-bold">{"Admin"}</div>
                 {/* <div className="text-sm text-[#64748B]">Project Manager</div> */}
               </div>
               <Dropdown user={user} />
@@ -42,23 +42,23 @@ const Header = () => {
         </div>
       </div>
     )
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 const Dropdown = ({ user }) => {
-  const dispatch = useDispatch()
-  const { setLogout } = useWebSocket()
-  const [show, setShow] = useState(false)
+  const dispatch = useDispatch();
+  const { setLogout } = useWebSocket();
+  const [show, setShow] = useState(false);
 
-  const handleClickOpen = useCallback(() => setShow(!show), [show])
+  const handleClickOpen = useCallback(() => setShow(!show), [show]);
 
   const handleSignout = useCallback(() => {
-    setLogout(prev => !prev)
-    setShow(false)
-    dispatch(logout())
-  }, [dispatch, setLogout])
+    setLogout((prev) => !prev);
+    setShow(false);
+    dispatch(logout());
+  }, [dispatch, setLogout]);
 
   return (
     <div
@@ -78,12 +78,12 @@ const Dropdown = ({ user }) => {
       {show && (
         <div
           className={clsx(
-            'absolute top-12 right-0',
-            'w-32 h-12',
-            'rounded-lg border',
-            'bg-white shadow-xl',
-            'flex items-center justify-center',
-            'hover:bg-slate-300'
+            "absolute top-12 right-0",
+            "w-32 h-12",
+            "rounded-lg border",
+            "bg-white shadow-xl",
+            "flex items-center justify-center",
+            "hover:bg-slate-300",
           )}
           onClick={handleSignout}
         >
@@ -91,5 +91,5 @@ const Dropdown = ({ user }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

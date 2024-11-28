@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const OpenSidebarIcon = ({ width = 15, height = 72, color = '#E2E8F0' }) => {
+const OpenSidebarIcon = ({ width = 15, height = 72, color = "#E2E8F0" }) => {
   return (
     <svg
       width={width}
@@ -17,7 +17,7 @@ const OpenSidebarIcon = ({ width = 15, height = 72, color = '#E2E8F0' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default OpenSidebarIcon
+export default OpenSidebarIcon;

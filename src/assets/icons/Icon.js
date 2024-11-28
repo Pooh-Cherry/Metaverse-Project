@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const Icon = ({ width, height, color }) => {
   return (
@@ -9,7 +9,7 @@ const Icon = ({ width, height, color }) => {
       fill={color}
       xmlns="http://www.w3.org/2000/svg"
     ></svg>
-  )
-}
+  );
+};
 
-export default Icon
+export default Icon;

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const SupportIcon = ({ width = 24, height = 24, color = '#64748B' }) => {
+const SupportIcon = ({ width = 24, height = 24, color = "#64748B" }) => {
   return (
     <svg
       width={width}
@@ -20,7 +20,7 @@ const SupportIcon = ({ width = 24, height = 24, color = '#64748B' }) => {
       <mask
         id="mask0_235_403"
         style={{
-          maskType: 'luminance'
+          maskType: "luminance",
         }}
         maskUnits="userSpaceOnUse"
         x="4"
@@ -50,7 +50,7 @@ const SupportIcon = ({ width = 24, height = 24, color = '#64748B' }) => {
         <mask
           id="mask1_235_403"
           style={{
-            maskType: 'luminance'
+            maskType: "luminance",
           }}
           maskUnits="userSpaceOnUse"
           x="3"
@@ -80,7 +80,7 @@ const SupportIcon = ({ width = 24, height = 24, color = '#64748B' }) => {
         </g>
       </g>
     </svg>
-  )
-}
+  );
+};
 
-export default SupportIcon
+export default SupportIcon;

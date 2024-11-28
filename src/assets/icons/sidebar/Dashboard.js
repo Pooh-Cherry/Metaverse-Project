@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const DashboardIcon = ({ width = 24, height = 25, color = '#64748B' }) => {
+const DashboardIcon = ({ width = 24, height = 25, color = "#64748B" }) => {
   return (
     <svg
       width={width}
@@ -26,7 +26,7 @@ const DashboardIcon = ({ width = 24, height = 25, color = '#64748B' }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default DashboardIcon
+export default DashboardIcon;

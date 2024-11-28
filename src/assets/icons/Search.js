@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const SearchIcon = ({ width = 18, height = 18, color = '#919090' }) => {
+const SearchIcon = ({ width = 18, height = 18, color = "#919090" }) => {
   return (
     <svg
       width={width}
@@ -26,7 +26,7 @@ const SearchIcon = ({ width = 18, height = 18, color = '#919090' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default SearchIcon
+export default SearchIcon;

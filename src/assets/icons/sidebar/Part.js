@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const PartIcon = ({ width = 24, height = 25, color = '#64748B' }) => {
+const PartIcon = ({ width = 24, height = 25, color = "#64748B" }) => {
   return (
     <svg
       width={width}
@@ -18,7 +18,7 @@ const PartIcon = ({ width = 24, height = 25, color = '#64748B' }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default PartIcon
+export default PartIcon;

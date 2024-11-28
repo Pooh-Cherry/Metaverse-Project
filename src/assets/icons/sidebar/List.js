@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const ListIcon = ({ width = 24, height = 25, color = '#64748B' }) => (
+const ListIcon = ({ width = 24, height = 25, color = "#64748B" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -16,6 +16,6 @@ const ListIcon = ({ width = 24, height = 25, color = '#64748B' }) => (
     <rect x="8" y="10.5" width="13" height="3" rx="0.5" />
     <rect x="8" y="16" width="13" height="3" rx="0.5" />
   </svg>
-)
+);
 
-export default ListIcon
+export default ListIcon;

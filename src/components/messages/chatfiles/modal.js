@@ -1,66 +1,66 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import moment from 'moment'
-import clsx from 'clsx'
-import { SearchIcon, DownloadIcon, MoreIcon, LeftVectorIcon } from '@icons'
-import { useAuth } from '@contexts/AuthContext'
-import { SERVER_ADDRESS } from '@constants/config'
+import React, { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import clsx from "clsx";
+import { SearchIcon, DownloadIcon, MoreIcon, LeftVectorIcon } from "@icons";
+import { useAuth } from "@contexts/AuthContext";
+import { SERVER_ADDRESS } from "@constants/config";
 
 const ChatFilesModal = ({ show, onClose }) => {
-  const { isAdmin } = useAuth()
-  const { attachments, selectedUser } = useSelector(state => state.message)
+  const { isAdmin } = useAuth();
+  const { attachments, selectedUser } = useSelector((state) => state.message);
 
-  const [close, setClose] = useState(false)
-  const [input, setInput] = useState('')
+  const [close, setClose] = useState(false);
+  const [input, setInput] = useState("");
 
   const handleInputChange = useCallback(
     ({ target: { value } }) => setInput(value),
-    []
-  )
+    [],
+  );
 
   const _attachments = useMemo(() => {
     if (isAdmin) {
       if (selectedUser) {
         return attachments.filter(
-          item =>
+          (item) =>
             item.room === selectedUser &&
-            item.type === 'file' &&
-            item.url.indexOf(input) !== -1
-        )
+            item.type === "file" &&
+            item.url.indexOf(input) !== -1,
+        );
       }
-      return []
+      return [];
     }
     return (attachments || []).filter(
-      item => item.type === 'file' && item.url.indexOf(input) !== -1
-    )
-  }, [isAdmin, attachments, selectedUser, input])
+      (item) => item.type === "file" && item.url.indexOf(input) !== -1,
+    );
+  }, [isAdmin, attachments, selectedUser, input]);
 
   const handleClickClose = useCallback(() => {
-    setClose(true)
+    setClose(true);
     setTimeout(() => {
-      onClose()
-    }, 300)
-  }, [onClose])
+      onClose();
+    }, 300);
+  }, [onClose]);
 
   return (
     <>
       <div
         className={clsx(
-          'fixed top-0 left-0 w-screen h-screen bg-[#535353C8] z-30',
+          "fixed top-0 left-0 w-screen h-screen bg-[#535353C8] z-30",
           {
-            'animate-fadeIn': show,
-            'animate-fadeOut': close
-          }
+            "animate-fadeIn": show,
+            "animate-fadeOut": close,
+          },
         )}
         onClick={handleClickClose}
       ></div>
       <div
         className={clsx(
-          'fixed right-0 top-0 w-full max-w-[540px] h-screen bg-white z-30',
+          "fixed right-0 top-0 w-full max-w-[540px] h-screen bg-white z-30",
           {
-            'animate-right-modal-in': show,
-            'animate-right-modal-out': close
-          }
+            "animate-right-modal-in": show,
+            "animate-right-modal-out": close,
+          },
         )}
       >
         <div className="min-h-[50px] h-[50px] text-2xl font-bold text-[#2B2929] px-10 mt-16 flex items-center">
@@ -90,27 +90,27 @@ const ChatFilesModal = ({ show, onClose }) => {
         </div>
         <div className="p-[30px] flex flex-col gap-2 h-[calc(100%_-_240px)] overflow-y-scroll">
           {_attachments &&
-            _attachments.map(item => (
+            _attachments.map((item) => (
               <FileItem
                 key={item.id}
                 url={item.url}
                 createdAt={moment
                   .utc(item.created_at)
                   .local()
-                  .format('D MMMM YYYY')}
+                  .format("D MMMM YYYY")}
               />
             ))}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ChatFilesModal
+export default ChatFilesModal;
 
 const FileItem = ({ createdAt, url }) => {
-  const title = url.substring(url.indexOf('-') + 1)
-  const type = url.substring(url.lastIndexOf('.') + 1)
+  const title = url.substring(url.indexOf("-") + 1);
+  const type = url.substring(url.lastIndexOf(".") + 1);
 
   return (
     <div className="border border-[#B3B3B2] px-3 py-[11px] gap-[15px] rounded-xl flex">
@@ -135,5 +135,5 @@ const FileItem = ({ createdAt, url }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

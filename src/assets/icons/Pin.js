@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const PinIcon = ({ width = 17, height = 17, color = '#2B2929' }) => {
+const PinIcon = ({ width = 17, height = 17, color = "#2B2929" }) => {
   return (
     <svg
       width={width}
@@ -15,7 +15,7 @@ const PinIcon = ({ width = 17, height = 17, color = '#2B2929' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default PinIcon
+export default PinIcon;

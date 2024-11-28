@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const Mp4Icon = ({ width = 30, height = 29, color = '#1B2559' }) => {
+const Mp4Icon = ({ width = 30, height = 29, color = "#1B2559" }) => {
   return (
     <svg
       width={width}
@@ -18,7 +18,7 @@ const Mp4Icon = ({ width = 30, height = 29, color = '#1B2559' }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default Mp4Icon
+export default Mp4Icon;

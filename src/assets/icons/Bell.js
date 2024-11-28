@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const BellIcon = ({ width = 24, height = 25, color = '#475569' }) => {
+const BellIcon = ({ width = 24, height = 25, color = "#475569" }) => {
   return (
     <svg
       width={width}
@@ -24,7 +24,7 @@ const BellIcon = ({ width = 24, height = 25, color = '#475569' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default BellIcon
+export default BellIcon;

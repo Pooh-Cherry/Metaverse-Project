@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const RightVectorIcon = ({ width = 6, height = 9, color = '#94A3B8' }) => {
+const RightVectorIcon = ({ width = 6, height = 9, color = "#94A3B8" }) => {
   return (
     <svg
       width={width}
@@ -16,7 +16,7 @@ const RightVectorIcon = ({ width = 6, height = 9, color = '#94A3B8' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default RightVectorIcon
+export default RightVectorIcon;

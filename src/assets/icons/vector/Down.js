@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const DownVectorIcon = ({ width = 10, height = 6, color = '#94A3B8' }) => {
+const DownVectorIcon = ({ width = 10, height = 6, color = "#94A3B8" }) => {
   return (
     <svg
       width={width}
@@ -17,7 +17,7 @@ const DownVectorIcon = ({ width = 10, height = 6, color = '#94A3B8' }) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default DownVectorIcon
+export default DownVectorIcon;

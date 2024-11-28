@@ -1,48 +1,48 @@
-import { useFlow } from '@contexts/FlowContext'
-import { faMailBulk, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useFlow } from "@contexts/FlowContext";
+import { faMailBulk, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const MenuModal = ({ parent, onClose }) => {
-  const { setType, handleRemoteNode } = useFlow()
-  const modal = useRef(null)
+  const { setType, handleRemoteNode } = useFlow();
+  const modal = useRef(null);
 
-  const [hover, setHover] = useState(false)
+  const [hover, setHover] = useState(false);
 
-  const handleHover = useCallback(() => setHover(true), [])
-  const handleClearHover = useCallback(() => setHover(false), [])
+  const handleHover = useCallback(() => setHover(true), []);
+  const handleClearHover = useCallback(() => setHover(false), []);
 
   useEffect(() => {
-    if (hover) return
+    if (hover) return;
     const timer = setTimeout(() => {
-      onClose(false)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [hover, onClose])
+      onClose(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [hover, onClose]);
 
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (modal.current && !modal.current.contains(event.target)) {
-        onClose(false)
+        onClose(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [onClose])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
-  const handleClick = () => {}
+  const handleClick = () => {};
 
   const handleOpenSelectEmailModal = useCallback(
     () => setType(parent),
-    [setType, parent]
-  )
+    [setType, parent],
+  );
 
   const handleRemove = useCallback(
     () => handleRemoteNode(parent),
-    [handleRemoteNode, parent]
-  )
+    [handleRemoteNode, parent],
+  );
 
   return (
     <div
@@ -52,20 +52,20 @@ const MenuModal = ({ parent, onClose }) => {
       onMouseLeave={handleClearHover}
     >
       <MenuItem
-        title={'Set Mail'}
+        title={"Set Mail"}
         onClick={handleOpenSelectEmailModal}
         icon={faMailBulk}
       />
-      <MenuItem title={'Delete'} onClick={handleRemove} icon={faTrashCan} />
+      <MenuItem title={"Delete"} onClick={handleRemove} icon={faTrashCan} />
     </div>
-  )
-}
+  );
+};
 
 const MenuItem = ({ title, icon, onClick }) => {
-  const handleClick = e => {
-    e.stopPropagation()
-    onClick()
-  }
+  const handleClick = (e) => {
+    e.stopPropagation();
+    onClick();
+  };
 
   return (
     <div
@@ -77,7 +77,7 @@ const MenuItem = ({ title, icon, onClick }) => {
       </div>
       <span>{title}</span>
     </div>
-  )
-}
+  );
+};
 
-export default MenuModal
+export default MenuModal;

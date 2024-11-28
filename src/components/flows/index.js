@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ReactFlow,
   MiniMap,
@@ -6,30 +6,33 @@ import {
   Background,
   addEdge,
   applyEdgeChanges,
-  applyNodeChanges
-} from '@xyflow/react'
-import 'react-notifications/lib/notifications.css'
-import { NotificationContainer, NotificationManager } from 'react-notifications'
+  applyNodeChanges,
+} from "@xyflow/react";
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
-import '@xyflow/react/dist/style.css'
-import RightSidePanel from './RightSidePanel'
-import AwesomeModal from './modal'
+import "@xyflow/react/dist/style.css";
+import RightSidePanel from "./RightSidePanel";
+import AwesomeModal from "./modal";
 import {
   AddTriggerEmail,
   GetBotEmails,
   GetComponents,
   getTriggerEmails,
   getTriggers,
-  saveComponents
-} from '../../apis'
+  saveComponents,
+} from "../../apis";
 import {
   ContactNode,
   FallbackNode,
   FaqNode,
   StartNode,
-  WelcomeNode
-} from './NodeItems'
-import { useFlow } from '@contexts/FlowContext'
+  WelcomeNode,
+} from "./NodeItems";
+import { useFlow } from "@contexts/FlowContext";
 
 export default function Flow() {
   const {
@@ -43,141 +46,141 @@ export default function Flow() {
     type,
     setType,
     contents,
-    setContents
-  } = useFlow()
+    setContents,
+  } = useFlow();
   const [size, setSize] = useState({
     width: document.documentElement.clientWidth,
-    height: document.documentElement.clientHeight
-  })
-  const [records, setRecords] = useState([])
-  const minor = 120
-  const start = size.height / 2.2
+    height: document.documentElement.clientHeight,
+  });
+  const [records, setRecords] = useState([]);
+  const minor = 120;
+  const start = size.height / 2.2;
 
   const nodeTypes = {
     start: StartNode,
     contact_us: ContactNode,
     faq: FaqNode,
     welcome: WelcomeNode,
-    fallback: FallbackNode
-  }
+    fallback: FallbackNode,
+  };
 
   const formatTriggers = useMemo(() => {
     return [
       {
-        id: 'start',
-        type: 'start',
+        id: "start",
+        type: "start",
         position: { x: 100, y: start },
-        data: {}
+        data: {},
       },
       {
-        id: 'welcome',
-        type: 'welcome',
+        id: "welcome",
+        type: "welcome",
         position: { x: 350, y: start - 2 * minor },
-        data: {}
+        data: {},
       },
       {
-        id: 'contact_us',
-        type: 'contact_us',
+        id: "contact_us",
+        type: "contact_us",
         position: { x: 350, y: start - minor },
-        data: {}
+        data: {},
       },
       {
-        id: 'faq',
-        type: 'faq',
+        id: "faq",
+        type: "faq",
         position: { x: 350, y: start },
-        data: {}
+        data: {},
       },
       {
-        id: 'fallback',
-        type: 'fallback',
+        id: "fallback",
+        type: "fallback",
         position: { x: 350, y: start + minor },
-        data: {}
-      }
-    ]
-  }, [start])
+        data: {},
+      },
+    ];
+  }, [start]);
 
   const onNodesChange = useCallback(
-    changes => setNodes(nds => applyNodeChanges(changes, nds)),
-    [setNodes]
-  )
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes],
+  );
   const onEdgesChange = useCallback(
-    changes => setEdges(eds => applyEdgeChanges(changes, eds)),
-    [setEdges]
-  )
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [setEdges],
+  );
 
   const onConnect = useCallback(
-    params => setEdges(eds => addEdge(params, eds)),
-    [setEdges]
-  )
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges],
+  );
 
   const selectEmail = async (email, emailStr) => {
-    await AddTriggerEmail(type, email)
-    setTrigger({ ...trigger, [type]: emailStr })
-    setType(null)
-  }
+    await AddTriggerEmail(type, email);
+    setTrigger({ ...trigger, [type]: emailStr });
+    setType(null);
+  };
 
   const getRecords = async () => {
-    const response = await GetBotEmails()
-    const trigger_response = await getTriggerEmails()
-    setRecords(response.emails)
-    const trigger_list = trigger_response.email_triggers
-    setTrigger(trigger_list)
+    const response = await GetBotEmails();
+    const trigger_response = await getTriggerEmails();
+    setRecords(response.emails);
+    const trigger_list = trigger_response.email_triggers;
+    setTrigger(trigger_list);
     // setNodes(formatTriggers)
-  }
+  };
 
   const getContents = async () => {
-    const response = await getTriggers()
-    const triggers = response.triggers
+    const response = await getTriggers();
+    const triggers = response.triggers;
 
-    let contents = {}
-    triggers.forEach(trigger => {
-      contents[trigger['trigger_type']] = {
-        title: trigger['title'],
-        content: trigger['response'],
-        file: trigger['file']
-      }
-    })
-    setContents(contents)
-  }
+    let contents = {};
+    triggers.forEach((trigger) => {
+      contents[trigger["trigger_type"]] = {
+        title: trigger["title"],
+        content: trigger["response"],
+        file: trigger["file"],
+      };
+    });
+    setContents(contents);
+  };
 
   const getComponents = async () => {
-    let newNodes = []
-    const response = await GetComponents()
-    response.nodes.forEach(node => {
+    let newNodes = [];
+    const response = await GetComponents();
+    response.nodes.forEach((node) => {
       newNodes.push({
-        id: node['id'],
-        type: node['type'],
+        id: node["id"],
+        type: node["type"],
         position: {
-          x: parseInt(node['x']),
-          y: parseInt(node['y'])
-        }
-      })
-    })
-    setNodes(newNodes)
-    setEdges(response.edges)
-  }
+          x: parseInt(node["x"]),
+          y: parseInt(node["y"]),
+        },
+      });
+    });
+    setNodes(newNodes);
+    setEdges(response.edges);
+  };
 
   const saveStatus = async () => {
-    await saveComponents(nodes, edges)
-    NotificationManager.success('Success message', 'Saved successfully!')
-  }
+    await saveComponents(nodes, edges);
+    NotificationManager.success("Success message", "Saved successfully!");
+  };
 
   useEffect(() => {
-    getRecords()
-    getContents()
-    getComponents()
-  }, [])
+    getRecords();
+    getContents();
+    getComponents();
+  }, []);
 
   return (
     <div className="h-screen min-h-screen max-h-screen w-screen sm:pl-[74px] pt-[74px]">
-      <div style={{ width: '100%', height: '100vh' }}>
+      <div style={{ width: "100%", height: "100vh" }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          style={{ backgroundColor: '#F6F6F6' }}
+          style={{ backgroundColor: "#F6F6F6" }}
           // fitView
           nodesConnectable={false}
           nodeTypes={nodeTypes}
@@ -203,7 +206,7 @@ export default function Flow() {
       <NotificationContainer />
       <AwesomeModal
         isOpen={type}
-        title={'Email List'}
+        title={"Email List"}
         onClose={() => setType(null)}
         children={
           <table style={styles.table}>
@@ -223,7 +226,7 @@ export default function Flow() {
                     <td style={styles.tableCell}>
                       <button
                         onClick={() => {
-                          selectEmail(record.id, record.email)
+                          selectEmail(record.id, record.email);
                         }}
                       >
                         Select
@@ -235,7 +238,7 @@ export default function Flow() {
                 <tr>
                   <td
                     colSpan="4"
-                    style={{ ...styles.tableCell, textAlign: 'center' }}
+                    style={{ ...styles.tableCell, textAlign: "center" }}
                   >
                     No emails available. Add a email above!
                   </td>
@@ -246,39 +249,39 @@ export default function Flow() {
         }
       />
     </div>
-  )
+  );
 }
 
 const styles = {
   table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+    width: "100%",
+    borderCollapse: "collapse",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
   },
   tableHeader: {
-    backgroundColor: '#f4f4f4',
-    color: '#333',
-    textAlign: 'left',
-    padding: '10px',
-    fontWeight: 'bold'
+    backgroundColor: "#f4f4f4",
+    color: "#333",
+    textAlign: "left",
+    padding: "10px",
+    fontWeight: "bold",
   },
   tableCell: {
-    padding: '10px',
-    borderBottom: '1px solid #ddd'
+    padding: "10px",
+    borderBottom: "1px solid #ddd",
   },
   tableRow: {
-    transition: 'background-color 0.3s'
+    transition: "background-color 0.3s",
   },
   deleteButton: {
-    padding: '5px 10px',
-    backgroundColor: '#E74C3C',
-    color: 'white',
-    border: 'none',
-    borderRadius: '3px',
-    cursor: 'pointer',
-    fontWeight: 'bold'
+    padding: "5px 10px",
+    backgroundColor: "#E74C3C",
+    color: "white",
+    border: "none",
+    borderRadius: "3px",
+    cursor: "pointer",
+    fontWeight: "bold",
   },
   tableRowHover: {
-    backgroundColor: '#f9f9f9'
-  }
-}
+    backgroundColor: "#f9f9f9",
+  },
+};

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const MoreIcon = ({ width = 24, height = 24, color = '#292D32' }) => {
+const MoreIcon = ({ width = 24, height = 24, color = "#292D32" }) => {
   return (
     <svg
       width={width}
@@ -22,7 +22,7 @@ const MoreIcon = ({ width = 24, height = 24, color = '#292D32' }) => {
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default MoreIcon
+export default MoreIcon;

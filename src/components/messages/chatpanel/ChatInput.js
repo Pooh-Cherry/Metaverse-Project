@@ -1,50 +1,50 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Picker from '@emoji-mart/react'
-import data from '@emoji-mart/data'
-import { v4 as uuidv4 } from 'uuid'
-import axios from 'axios'
-import clsx from 'clsx'
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import clsx from "clsx";
 
-import { SendIcon, EmojiIcon, AttachmentIcon } from '@icons'
-import { addMessage, getSelectedUser, setStatus } from '@redux/messageSlice'
-import { setStatus as setAuthStatus } from '@redux/authSlice'
-import { MEDIA_TYPES } from '@constants'
-import { SERVER_ADDRESS } from '@constants/config'
-import { useAuth } from '@contexts/AuthContext'
-import { useWebSocket } from '@contexts/WebSocketContext'
+import { SendIcon, EmojiIcon, AttachmentIcon } from "@icons";
+import { addMessage, getSelectedUser, setStatus } from "@redux/messageSlice";
+import { setStatus as setAuthStatus } from "@redux/authSlice";
+import { MEDIA_TYPES } from "@constants";
+import { SERVER_ADDRESS } from "@constants/config";
+import { useAuth } from "@contexts/AuthContext";
+import { useWebSocket } from "@contexts/WebSocketContext";
 
 const ChatInput = () => {
-  const dispatch = useDispatch()
-  const { room, selectedUser } = useSelector(state => state.message)
-  const _selectedUser = useSelector(getSelectedUser)
-  const user = useAuth()
-  const { socket } = useWebSocket()
-  const textAreaRef = useRef(null)
-  const [input, setInput] = useState('')
-  const [files, setFiles] = useState([])
+  const dispatch = useDispatch();
+  const { room, selectedUser } = useSelector((state) => state.message);
+  const _selectedUser = useSelector(getSelectedUser);
+  const user = useAuth();
+  const { socket } = useWebSocket();
+  const textAreaRef = useRef(null);
+  const [input, setInput] = useState("");
+  const [files, setFiles] = useState([]);
 
   const handleInputChange = useCallback(
     ({ target: { value } }) => {
-      setInput(value)
-      dispatch(setAuthStatus(3))
+      setInput(value);
+      dispatch(setAuthStatus(3));
       const timer = setTimeout(() => {
-        dispatch(setAuthStatus(0))
-      }, 3000)
-      return () => clearTimeout(timer)
+        dispatch(setAuthStatus(0));
+      }, 3000);
+      return () => clearTimeout(timer);
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const handleClickRemoveFile = useCallback(
-    src => setFiles(files.filter(item => item !== src)),
-    [files]
-  )
+    (src) => setFiles(files.filter((item) => item !== src)),
+    [files],
+  );
 
   const handleSetFiles = useCallback(
-    src => setFiles([...files, ...src]),
-    [files]
-  )
+    (src) => setFiles([...files, ...src]),
+    [files],
+  );
 
   const onSendMessage = useCallback(
     (message, files) => {
@@ -57,101 +57,101 @@ const ChatInput = () => {
         attachments: files,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        status: user.isAdmin ? 'read' : 'unread'
-      }
-      if (!user.isAdmin) dispatch(setStatus(3))
+        status: user.isAdmin ? "read" : "unread",
+      };
+      if (!user.isAdmin) dispatch(setStatus(3));
       dispatch(
         addMessage({
           room: user.isAdmin ? selectedUser : room,
           data: _msg,
-          type: 'send'
-        })
-      )
+          type: "send",
+        }),
+      );
       if (socket) {
         socket.send(
           JSON.stringify({
             room: user.isAdmin ? selectedUser : room,
-            type: user.isAdmin ? 'reply' : 'message',
-            data: _msg
-          })
-        )
+            type: user.isAdmin ? "reply" : "message",
+            data: _msg,
+          }),
+        );
       }
-      setInput('')
-      setFiles([])
+      setInput("");
+      setFiles([]);
     },
-    [dispatch, user, socket, room, selectedUser, _selectedUser]
-  )
+    [dispatch, user, socket, room, selectedUser, _selectedUser],
+  );
 
   const handleKeyDown = useCallback(
-    event => {
-      if (event.key === 'Enter' && event.ctrlKey) {
-        event.preventDefault()
-        if (input || files.length > 0) onSendMessage(input, files)
+    (event) => {
+      if (event.key === "Enter" && event.ctrlKey) {
+        event.preventDefault();
+        if (input || files.length > 0) onSendMessage(input, files);
       }
     },
-    [input, files, onSendMessage]
-  )
+    [input, files, onSendMessage],
+  );
 
   const handleSubmit = useCallback(
-    e => {
-      e.preventDefault()
-      if (input || files.length > 0) onSendMessage(input, files)
+    (e) => {
+      e.preventDefault();
+      if (input || files.length > 0) onSendMessage(input, files);
     },
-    [input, files, onSendMessage]
-  )
+    [input, files, onSendMessage],
+  );
 
   const addEmoji = useCallback(
     ({ id, native }) => {
       // console.log(id);
       // <em-emoji id="+1" size="2em"></em-emoji>
-      setInput(input + native)
+      setInput(input + native);
     },
-    [input]
-  )
+    [input],
+  );
 
   const handleFocus = useCallback(() => {
-    console.log('focus')
+    console.log("focus");
     socket.send(
       JSON.stringify({
         room: selectedUser,
-        type: 'select',
-        data: null
-      })
-    )
-  }, [socket, selectedUser])
+        type: "select",
+        data: null,
+      }),
+    );
+  }, [socket, selectedUser]);
 
   const handleBlur = useCallback(() => {
-    console.log('blur')
+    console.log("blur");
     if (selectedUser) {
       socket.send(
         JSON.stringify({
-          room: 'admin-room',
-          type: 'select',
-          data: selectedUser
-        })
-      )
+          room: "admin-room",
+          type: "select",
+          data: selectedUser,
+        }),
+      );
     }
-  }, [socket, selectedUser])
+  }, [socket, selectedUser]);
 
   const adjustHeight = () => {
-    const maxRows = 10
-    const lineHeight = 24
-    const maxHeight = lineHeight * maxRows
+    const maxRows = 10;
+    const lineHeight = 24;
+    const maxHeight = lineHeight * maxRows;
 
     if (textAreaRef.current) {
-      textAreaRef.current.style.height = 'auto'
+      textAreaRef.current.style.height = "auto";
       textAreaRef.current.style.height = `${Math.min(
         textAreaRef.current.scrollHeight,
-        maxHeight
-      )}px`
+        maxHeight,
+      )}px`;
       textAreaRef.current.style.overflowY =
-        textAreaRef.current.scrollHeight > maxHeight ? 'auto' : 'hidden'
+        textAreaRef.current.scrollHeight > maxHeight ? "auto" : "hidden";
     }
-  }
+  };
 
   useEffect(() => {
-    adjustHeight()
-  }, [input])
+    adjustHeight();
+  }, [input]);
 
   return (
     <>
@@ -163,7 +163,7 @@ const ChatInput = () => {
         {files && files.length > 0 && (
           <div
             className={clsx(
-              'absolute -top-24 right-6 text-red-600 w-full flex justify-end items-end gap-1'
+              "absolute -top-24 right-6 text-red-600 w-full flex justify-end items-end gap-1",
             )}
           >
             {files.map((item, index) => (
@@ -198,53 +198,53 @@ const ChatInput = () => {
         </button>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default ChatInput
+export default ChatInput;
 
 const FileUploader = ({ setFiles }) => {
-  const fileInputRef = useRef(null)
+  const fileInputRef = useRef(null);
 
   const handleFileChange = useCallback(
     async ({ target: { files } }) => {
-      const selectedFiles = [...files]
-      const formData = new FormData()
+      const selectedFiles = [...files];
+      const formData = new FormData();
 
       selectedFiles.forEach((file, index) => {
-        formData.append(`file_${index}`, file)
-      })
-      console.log(selectedFiles)
+        formData.append(`file_${index}`, file);
+      });
+      console.log(selectedFiles);
 
       try {
         const response = await axios.post(
-          SERVER_ADDRESS + '/api/upload',
+          SERVER_ADDRESS + "/api/upload",
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        )
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
 
-        console.log(response.data)
+        console.log(response.data);
 
         if (response.status === 200) {
-          console.log('Files uploaded successfully', selectedFiles)
-          setFiles(response.data.path)
+          console.log("Files uploaded successfully", selectedFiles);
+          setFiles(response.data.path);
         } else {
-          console.error('Error uploading files')
+          console.error("Error uploading files");
         }
       } catch (error) {
-        console.error('Error:', error)
+        console.error("Error:", error);
       }
     },
-    [setFiles]
-  )
+    [setFiles],
+  );
 
   const openFileDialog = useCallback(() => {
-    if (fileInputRef.current) fileInputRef.current.click()
-  }, [])
+    if (fileInputRef.current) fileInputRef.current.click();
+  }, []);
 
   return (
     <>
@@ -252,7 +252,7 @@ const FileUploader = ({ setFiles }) => {
         type="file"
         multiple
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         ref={fileInputRef}
       />
       <div
@@ -262,18 +262,18 @@ const FileUploader = ({ setFiles }) => {
         <AttachmentIcon />
       </div>
     </>
-  )
-}
+  );
+};
 
 const Emoji = ({ addEmoji }) => {
-  const [showPicker, setShowPicker] = useState(0)
+  const [showPicker, setShowPicker] = useState(0);
 
   const handleToggleEmoji = useCallback(
     () => setShowPicker(showPicker === 1 ? 2 : 0),
-    [showPicker]
-  )
+    [showPicker],
+  );
 
-  const handleShowEmoji = useCallback(() => setShowPicker(1), [])
+  const handleShowEmoji = useCallback(() => setShowPicker(1), []);
 
   return (
     <>
@@ -284,7 +284,7 @@ const Emoji = ({ addEmoji }) => {
             autoFocus={true}
             navPosition="bottom"
             previewPosition="none"
-            emojiButtonColors={['rgba(49,59,67,.7)']}
+            emojiButtonColors={["rgba(49,59,67,.7)"]}
             onEmojiSelect={addEmoji}
             onClickOutside={handleToggleEmoji}
           />
@@ -297,15 +297,15 @@ const Emoji = ({ addEmoji }) => {
         <EmojiIcon />
       </div>
     </>
-  )
-}
+  );
+};
 
 const FileItem = ({ src, onClick }) => {
-  const ext = src.substring(src.lastIndexOf('.') + 1)
-  const type = MEDIA_TYPES.includes(ext.toLowerCase()) ? 'media' : 'file'
-  const title = src.substring(src.indexOf('-') + 1)
+  const ext = src.substring(src.lastIndexOf(".") + 1);
+  const type = MEDIA_TYPES.includes(ext.toLowerCase()) ? "media" : "file";
+  const title = src.substring(src.indexOf("-") + 1);
 
-  const handleClick = useCallback(() => onClick(src), [src, onClick])
+  const handleClick = useCallback(() => onClick(src), [src, onClick]);
 
   return (
     <div>
@@ -316,7 +316,7 @@ const FileItem = ({ src, onClick }) => {
         >
           X
         </div>
-        {type === 'file' && (
+        {type === "file" && (
           <div className="flex flex-col">
             <span className="text-center font-bold">{ext}</span>
             <span className="text-center text-xs w-16 break-words overflow-hidden">
@@ -324,7 +324,7 @@ const FileItem = ({ src, onClick }) => {
             </span>
           </div>
         )}
-        {type === 'media' && (
+        {type === "media" && (
           <img
             alt="file"
             src={`${SERVER_ADDRESS}/${src}`}
@@ -335,5 +335,5 @@ const FileItem = ({ src, onClick }) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};

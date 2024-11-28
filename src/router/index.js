@@ -1,13 +1,13 @@
-import React, { lazy, Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
-import withAuth from '../components/layouts/WithAuth'
-import FlowChart from '@pages/flow'
-import Emails from '@pages/emails'
-import Embeddings from '@pages/embeddings'
+import React, { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import withAuth from "../components/layouts/WithAuth";
+import FlowChart from "@pages/flow";
+import Emails from "@pages/emails";
+import Embeddings from "@pages/embeddings";
 
-const Signin = lazy(() => import('../pages/Signin'))
-const Messages = lazy(() => import('../pages/Messages'))
-const List = lazy(() => import('../pages/List'))
+const Signin = lazy(() => import("../pages/Signin"));
+const Messages = lazy(() => import("../pages/Messages"));
+const List = lazy(() => import("../pages/List"));
 
 const Router = () => {
   return (
@@ -21,7 +21,7 @@ const Router = () => {
         <Route path="/embeddings" element={withAuth(Embeddings)()} />
       </Routes>
     </Suspense>
-  )
-}
+  );
+};
 
-export default Router
+export default Router;

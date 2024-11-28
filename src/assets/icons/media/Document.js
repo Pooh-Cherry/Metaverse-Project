@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const DocumentIcon = ({ width = 30, height = 29, color = '#1B2559' }) => {
+const DocumentIcon = ({ width = 30, height = 29, color = "#1B2559" }) => {
   return (
     <svg
       width={width}
@@ -26,7 +26,7 @@ const DocumentIcon = ({ width = 30, height = 29, color = '#1B2559' }) => {
         fill="#292D32"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default DocumentIcon
+export default DocumentIcon;
