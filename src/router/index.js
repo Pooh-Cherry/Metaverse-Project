@@ -13,7 +13,7 @@ const Router = () => {
   return (
     <Suspense fallback={<div className=""></div>}>
       <Routes>
-        <Route path="/signin" element={Signin} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/chat" element={withAuth(Messages)()} />
         <Route path="/" element={withAuth(List)()} />
         <Route path="/flow" element={withAuth(FlowChart)()} />

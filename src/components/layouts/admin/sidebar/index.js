@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import clsx from 'clsx'
 import {
   MarkIcon,
@@ -11,7 +12,6 @@ import {
 } from '@icons'
 
 import { useAuth } from '@contexts/AuthContext'
-
 import { useNavigate } from 'react-router-dom'
 import { ListIcon } from '@icons/sidebar'
 
@@ -19,6 +19,14 @@ const Sidebar = () => {
   const user = useAuth()
   const navigate = useNavigate()
   const [select, setSelect] = useState(1)
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.pathname === '/') setSelect(1)
+    else if (location.pathname === '/flows') setSelect(2)
+    else if (location.pathname === '/emails') setSelect(4)
+    else if (location.pathname === '/embeddings') setSelect(5)
+  })
 
   return (
     user.isAuthenticated && (

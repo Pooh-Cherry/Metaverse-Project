@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuth } from '@contexts/AuthContext'
-import Signin from '@pages/Signin'
+import { useNavigate } from 'react-router-dom'
 
 const withAuth = Component => {
   return props => {
-    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+    const { isAuthenticated } = useAuth() // Replace this with your actual authentication logic
 
-    if (!isAuthenticated) {
-      return <Signin />
-    }
+    useEffect(() => {
+      if (!isAuthenticated) {
+        navigate('/signin') // Redirect to sign-in if not authenticated
+      }
+    }, [isAuthenticated, navigate])
 
-    return <Component {...props} />
+    return isAuthenticated ? <Component {...props} /> : null
   }
 }
 

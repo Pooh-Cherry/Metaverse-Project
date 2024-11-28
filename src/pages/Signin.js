@@ -7,6 +7,7 @@ import { login } from '@redux/authSlice'
 import { initMessage } from '@redux/messageSlice'
 import { useWebSocket } from '@contexts/WebSocketContext'
 import { SERVER_ADDRESS } from '@constants/config'
+import { useNavigate } from 'react-router-dom'
 
 const Signin = () => {
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const Signin = () => {
   const [username, setUsername] = useState('admin')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleInputChange = useCallback(({ target: { value } }) => {
     setUsername(value)
@@ -31,6 +33,7 @@ const Signin = () => {
         setLoading(false)
         return
       }
+      navigate('/')
       socket.send(
         JSON.stringify({
           room: response.data.user.room,
