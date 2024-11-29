@@ -30,7 +30,7 @@ const AdminMessages = () => {
   }, []);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen w-screen relative sm:pl-[74px] pt-[74px] flex justify-center">
+    <div className="h-screen min-h-screen max-h-screen relative flex justify-center py-2 w-[calc(100%_-_56px)]">
       <div
         className={clsx("h-full w-full flex px-10 justify-center", {
           "flex-col": isAdmin,

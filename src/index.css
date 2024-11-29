@@ -9,6 +9,10 @@ body {
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #1e1e1e;
+  display: flex !important;
+  width: 100%;
+  height: 100vh;
 }
 
 code {
@@ -130,8 +134,8 @@ code {
 
 .floating-save-btn {
   position: fixed; /* Keeps the button floating */
-  top: 84px; /* Adjust distance from the top */
-  left: 84px; /* Adjust distance from the left */
+  top: 20px; /* Adjust distance from the top */
+  left: calc(100% - 120px); /* Adjust distance from the left */
   display: flex; /* For aligning icon and text */
   align-items: center; /* Vertically align text and icon */
   gap: 8px; /* Space between icon and text */

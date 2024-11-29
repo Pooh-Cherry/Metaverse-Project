@@ -85,7 +85,6 @@ const Signin = () => {
         className={clsx(
           "w-screen h-screen",
           "flex justify-center items-center",
-          "bg-white",
         )}
       >
         <form method="POST" onSubmit={handleSubmit}>

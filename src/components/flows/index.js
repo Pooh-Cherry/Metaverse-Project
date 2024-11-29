@@ -172,116 +172,108 @@ export default function Flow() {
   }, []);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen w-screen sm:pl-[74px] pt-[74px]">
-      <div style={{ width: "100%", height: "100vh" }}>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          style={{ backgroundColor: "#F6F6F6" }}
-          // fitView
-          nodesConnectable={false}
-          nodeTypes={nodeTypes}
+    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[calc(100%_-_56px)]">
+      <div className="w-full h-full bg-[#F6F6F6] flex flex-col rounded-xl">
+        <div
+          style={{
+            width: "100%",
+            height: "100vh",
+            borderRadius: 10,
+          }}
         >
-          <Controls />
-          <MiniMap />
-          <Background variant="dots" gap={12} size={1} />
-        </ReactFlow>
-      </div>
-      {menuOpen && <RightSidePanel open={menuOpen} />}
-      <button className="floating-save-btn" onClick={() => saveStatus()}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          width="20px"
-          height="20px"
-        >
-          <path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-3 16H7v-2h7v2zm3-9H5V5h10v5z" />
-        </svg>
-        Save
-      </button>
-      <NotificationContainer />
-      <AwesomeModal
-        isOpen={type}
-        title={"Email List"}
-        onClose={() => setType(null)}
-        children={
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.tableHeader}>#</th>
-                <th style={styles.tableHeader}>Email</th>
-                <th style={styles.tableHeader}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {records.length > 0 ? (
-                records.map((record, index) => (
-                  <tr key={record.id} style={styles.tableRow}>
-                    <td style={styles.tableCell}>{index + 1}</td>
-                    <td style={styles.tableCell}>{record.email}</td>
-                    <td style={styles.tableCell}>
-                      <button
-                        onClick={() => {
-                          selectEmail(record.id, record.email);
-                        }}
-                      >
-                        Select
-                      </button>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            style={{
+              backgroundColor: "#F6F6F6",
+              borderRadius: "12px",
+              paddingRight: "8px",
+              width: "calc(100% - 56px)",
+            }}
+            // fitView
+            nodesConnectable={false}
+            nodeTypes={nodeTypes}
+          >
+            <Controls />
+            <MiniMap />
+            <Background variant="dots" gap={12} size={1} />
+          </ReactFlow>
+        </div>
+        {menuOpen && <RightSidePanel open={menuOpen} />}
+        <button className="floating-save-btn" onClick={() => saveStatus()}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="20px"
+            height="20px"
+          >
+            <path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-3 16H7v-2h7v2zm3-9H5V5h10v5z" />
+          </svg>
+          Save
+        </button>
+        <NotificationContainer />
+        <AwesomeModal
+          isOpen={type}
+          title={"Email List"}
+          onClose={() => setType(null)}
+          children={
+            <table className="w-full border-collapse shadow-md">
+              <thead>
+                <tr>
+                  <th className="bg-gray-200 text-gray-800 text-left p-2.5 font-bold">
+                    #
+                  </th>
+                  <th className="bg-gray-200 text-gray-800 text-left p-2.5 font-bold">
+                    Email
+                  </th>
+                  <th className="bg-gray-200 text-gray-800 text-left p-2.5 font-bold">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {records.length > 0 ? (
+                  records.map((record, index) => (
+                    <tr
+                      key={record.id}
+                      style={{ transition: "background-color 0.3s" }}
+                    >
+                      <td className="p-2.5 border-b border-gray-300">
+                        {index + 1}
+                      </td>
+                      <td className="p-2.5 border-b border-gray-300">
+                        {record.email}
+                      </td>
+                      <td className="p-2.5 border-b border-gray-300">
+                        <button
+                          onClick={() => {
+                            selectEmail(record.id, record.email);
+                          }}
+                        >
+                          Select
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      className="py-2.5 border-b border-gray-300 text-center"
+                      colSpan="4"
+                    >
+                      No emails available. Add a email above!
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan="4"
-                    style={{ ...styles.tableCell, textAlign: "center" }}
-                  >
-                    No emails available. Add a email above!
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        }
-      />
+                )}
+              </tbody>
+            </table>
+          }
+        />
+      </div>
     </div>
   );
 }
-
-const styles = {
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-  },
-  tableHeader: {
-    backgroundColor: "#f4f4f4",
-    color: "#333",
-    textAlign: "left",
-    padding: "10px",
-    fontWeight: "bold",
-  },
-  tableCell: {
-    padding: "10px",
-    borderBottom: "1px solid #ddd",
-  },
-  tableRow: {
-    transition: "background-color 0.3s",
-  },
-  deleteButton: {
-    padding: "5px 10px",
-    backgroundColor: "#E74C3C",
-    color: "white",
-    border: "none",
-    borderRadius: "3px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-  tableRowHover: {
-    backgroundColor: "#f9f9f9",
-  },
-};

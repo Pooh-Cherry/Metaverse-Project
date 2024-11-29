@@ -2,20 +2,20 @@ import CloseSidebarIcon from "./CloseSidebar";
 import DashboardIcon from "./Dashboard";
 import MessagesIcon from "./Messages";
 import OpenSidebarIcon from "./OpenSidebar";
-import PartIcon from "./Part";
+import IntegrationIcon from "./Integration";
 import SupportIcon from "./Support";
 import UsersIcon from "./Users";
 import EmailsIcon from "./Emails";
-import ListIcon from "./List";
+import ReportIcon from "./Report";
 
 export {
   CloseSidebarIcon,
   DashboardIcon,
   MessagesIcon,
   OpenSidebarIcon,
-  PartIcon,
+  IntegrationIcon,
   SupportIcon,
   UsersIcon,
   EmailsIcon,
-  ListIcon,
+  ReportIcon,
 };

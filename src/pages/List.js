@@ -225,7 +225,7 @@ const List = () => {
     {
       title: "Documents",
       content: (
-        <div className="mb-4 px-6">
+        <div className="mb-4">
           <label
             htmlFor="large-input"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -327,7 +327,9 @@ const List = () => {
       title: "Text",
       content: (
         <div className="relative w-full min-w-[200px]">
-          <label>Here you can add description</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Here you can add description
+          </label>
           <textarea
             className="mt-2 mb-4 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder=""
@@ -353,7 +355,9 @@ const List = () => {
               <option key={index}>{item["question"]}</option>
             ))}
           </select>
-          <label>Question</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Question
+          </label>
           <input
             type="text"
             placeholder=""
@@ -361,7 +365,9 @@ const List = () => {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
           />
-          <label>Answer</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Answer
+          </label>
           <textarea
             className="mb-4 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             placeholder=""
@@ -386,67 +392,72 @@ const List = () => {
   ];
 
   return (
-    <div className="relative sm:pl-[74px] pt-[74px]">
-      <div className="p-6 w-[80%] mx-auto">
-        {/* Header */}
-        <h2 className="text-2xl font-bold mb-4">Data Sources</h2>
-        <p className="text-gray-500 mb-6">
-          Add your data sources to train your Assistant
-        </p>
+    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[calc(100%_-_56px)] max-w-[100%]">
+      <div
+        className="h-full bg-[#F6F6F6] flex flex-col rounded-xl x-full"
+        style={{ width: "100%" }}
+      >
+        <div className="p-6 flex flex-col h-full gap-4">
+          {/* Header */}
+          <h2 className="text-2xl font-bold">Data Sources</h2>
+          <p className="text-gray-500">
+            Add your data sources to train your Assistant
+          </p>
 
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Left Panel */}
-          <div className="flex-1 bg-white p-6 rounded-lg shadow-md w-[65%]">
-            {/* Tab Bar */}
-            <div className="flex border-b border-gray-200">
-              {tabContent.map((tab, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveTab(index)}
-                  className={`py-2 px-4 font-medium focus:outline-none ${
-                    activeTab === index
-                      ? "text-indigo-600 border-b-2 border-indigo-600"
-                      : "text-gray-500 hover:text-indigo-600"
-                  }`}
-                >
-                  {tab.title}
-                </button>
-              ))}
+          <div className="flex flex-col justify-between md:flex-row gap-4 h-full">
+            {/* Left Panel */}
+            <div className="bg-white p-6 rounded-lg shadow-md w-[80%]">
+              {/* Tab Bar */}
+              <div className="flex border-b border-gray-200">
+                {tabContent.map((tab, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTab(index)}
+                    className={`py-2 px-4 font-medium focus:outline-none ${
+                      activeTab === index
+                        ? "text-indigo-600 border-b-2 border-indigo-600"
+                        : "text-gray-500 hover:text-indigo-600"
+                    }`}
+                  >
+                    {tab.title}
+                  </button>
+                ))}
+              </div>
+
+              {/* Content Area */}
+              <div className="mt-4">{tabContent[activeTab].content}</div>
             </div>
 
-            {/* Content Area */}
-            <div className="mt-4">{tabContent[activeTab].content}</div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <button
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-center"
-              onClick={() => update()}
-            >
-              Update Knowledge
-            </button>
+            <div className="bg-white p-6 rounded-lg shadow-md w-[20%]">
+              <button
+                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-center"
+                onClick={() => update()}
+              >
+                Update Knowledge
+              </button>
+            </div>
           </div>
         </div>
+
+        {loading && (
+          <div
+            className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center"
+            style={{ background: "rgb(0,0,0,0.3)" }}
+          >
+            <div className="bg-white border py-2 px-5 rounded-lg flex items-center flex-col">
+              <div className="loader-dots block relative w-20 h-5 mt-2">
+                <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
+                <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
+                <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
+                <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <div className="text-gray-500 text-xs font-medium mt-2 text-center">
+                {msg}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-
-      {loading && (
-        <div
-          className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center"
-          style={{ background: "rgb(0,0,0,0.3)" }}
-        >
-          <div className="bg-white border py-2 px-5 rounded-lg flex items-center flex-col">
-            <div className="loader-dots block relative w-20 h-5 mt-2">
-              <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-              <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-              <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-              <div className="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-            </div>
-            <div className="text-gray-500 text-xs font-medium mt-2 text-center">
-              {msg}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -34,12 +34,10 @@ const Embeddings = () => {
   }, []);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen w-screen p-1 sm:pl-[78px] pt-[78px]">
-      <div className="w-full h-full bg-[#F5F5F5] flex flex-col rounded-2xl">
-        <div className="flex justify-between items-center px-8 py-3">
-          <div className="text-lg text-[#22272d] font-bold">
-            AI KnowledgeBase
-          </div>
+    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[calc(100%_-_56px)]">
+      <div className="w-full h-full bg-[#F6F6F6] flex flex-col rounded-xl p-6">
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-bold">AI KnowledgeBase</div>
           {/* <div className="relative">
             <input
               placeholder="Search"
@@ -53,7 +51,7 @@ const Embeddings = () => {
             X
           </button> */}
         </div>
-        <div className="h-full flex justify-center pb-4 px-2">
+        <div className="h-full flex pt-4 w-full">
           <div className="bg-white container rounded-2xl shadow-[0_0_8px_#0001] flex">
             <div className="w-[340px] min-w-[340px] shadow-[4px_0_8px_#00000008] rounded-e-lg p-9 flex flex-col justify-between">
               <div className="flex flex-col gap-2">
