@@ -48,16 +48,11 @@ const UserDropdownMenu = ({ user }) => {
           id="dropdownAvatar"
           className="absolute left-14 bottom-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 max-h-[166px] w-[318px]"
         >
-          <div className="px-4 py-3 text-sm text-black font-bold w-full flex gap-4">
+          <div className="px-4 py-3 text-sm text-black font-bold w-full flex gap-4 cursor-default	">
             <div>
-              <button
-                id="dropdownUserAvatarButton"
-                onClick={toggleDropdown}
-                className="w-[40px] h-[40px] transition-all rounded-lg items-center text-lg text-white bg-[#9222DC] rounded-full hover:bg-[#9222DC90]"
-                type="button"
-              >
+              <div className="w-[40px] h-[40px] transition-all rounded-lg items-center text-lg text-white bg-[#9222DC] rounded-full flex text-center align-center justify-center">
                 <div alt="user avatar">{user?.name[0].toUpperCase()}</div>
-              </button>
+              </div>
             </div>
             <div>
               <div className="font-medium truncate">
