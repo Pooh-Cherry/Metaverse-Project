@@ -10,6 +10,10 @@ import {
   IntegrationIcon,
   EmailsIcon,
   ReportIcon,
+  BellIcon,
+  HelpIcon,
+  ExpandIcon,
+  InboxIcon,
 } from "@icons";
 import UserDropdownMenu from "./UserDropdownMenu";
 
@@ -17,26 +21,64 @@ const Sidebar = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const [select, setSelect] = useState(1);
+  const [expand, setExpand] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     if (location.pathname === "/") setSelect(1);
-    else if (location.pathname === "/flows") setSelect(2);
-    else if (location.pathname === "/emails") setSelect(4);
-    else if (location.pathname === "/embeddings") setSelect(5);
+    else if (location.pathname === "/emails") setSelect(2);
+    else if (location.pathname === "/embeddings") setSelect(3);
+    else if (location.pathname === "/flow") setSelect(4);
+    else if (location.pathname === "/chat") setSelect(5);
   }, [location]);
 
   return (
     user.isAuthenticated && (
-      <div className="sm:left-0 z-30 h-screen min-h-screen max-h-screen transition-all max-w-14">
-        <div className="h-full max-h-[1024px] flex flex-col justify-between p-2">
+      <div
+        className={`sm:left-0 z-30 h-screen min-h-screen max-h-screen transition-all w-full ${
+          expand ? "max-w-60" : "max-w-14"
+        }`}
+      >
+        <div className="h-full flex flex-col justify-between p-2 text-white text-lg font-bold">
           <div className="flex flex-col items-center gap-2">
-            <div className="transition-all rounded-lg ">
-              <MarkIcon />
+            <div
+              className={`flex items-center gap-2 ${expand ? "w-full flex-row justify-between" : "flex-col"}`}
+            >
+              <div className="transition-all rounded-lg flex items-center gap-2">
+                <MarkIcon color={true ? "white" : "#64748B"} />
+                {expand ? <p>WebBox</p> : ""}
+              </div>
+              <div
+                className={clsx(
+                  "cursor-pointer p-2.5 transition-all rounded-lg bg-[#2F2F2F] hover:bg-[#434343] gap-2  ",
+                  {
+                    "bg-[#434343] border-1 border-[#242222]": select === 3,
+                  },
+                )}
+                onClick={() => setExpand((expand) => !expand)}
+                data-tooltip-id="expandTooltip"
+                data-tooltip-content="Expand"
+              >
+                <ExpandIcon color={true ? "white" : "#64748B"} />
+                {expand ? (
+                  ""
+                ) : (
+                  <Tooltip
+                    style={{
+                      marginRight: "8px",
+                      marginLeft: "8px",
+                      fontWeight: "200",
+                    }}
+                    id="expandTooltip"
+                    place="right"
+                    effect="solid"
+                  />
+                )}
+              </div>
             </div>
             <div
               className={clsx(
-                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] gap-2  ",
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 1,
                 },
@@ -49,121 +91,216 @@ const Sidebar = () => {
               data-tooltip-content="Dashboard"
             >
               <DashboardIcon color={true ? "white" : "#64748B"} />
-              <Tooltip
-                style={{
-                  marginRight: "8px",
-                  marginLeft: "8px",
-                }}
-                id="dashboardTooltip"
-                place="right"
-                effect="solid"
-              />
+              {expand ? (
+                <p>Dashboard</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="dashboardTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
             </div>
             <div
               className={clsx(
-                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343]",
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 2,
                 },
               )}
               onClick={() => {
-                navigate("/flow");
-                setSelect(2);
-              }}
-              data-tooltip-id="intergrationTooltip"
-              data-tooltip-content="Integrations"
-            >
-              <IntegrationIcon color={true ? "white" : "#64748B"} />
-              <Tooltip
-                style={{
-                  marginRight: "8px",
-                  marginLeft: "8px",
-                }}
-                id="intergrationTooltip"
-                place="right"
-                effect="solid"
-              />
-            </div>
-            {/* <div
-                className={clsx(
-                  'cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#2B292940]',
-                  {
-                    'bg-[#2B2929] border-1 border-[#242222]': select === 3
-                  }
-                )} onClick={() => {
-                  navigate('/chat');
-                  setSelect(3);
-                }}
-              >
-                <MessagesIcon color={false ? 'white' : '#64748B'} />
-              </div> */}
-            <div
-              className={clsx(
-                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343]",
-                {
-                  "bg-[#434343] border-1 border-[#242222]": select === 4,
-                },
-              )}
-              onClick={() => {
                 navigate("/emails");
-                setSelect(4);
+                setSelect(2);
               }}
               data-tooltip-id="emailTooltip"
               data-tooltip-content="E-Mail"
             >
               <EmailsIcon color={true ? "white" : "#64748B"} />
-              <Tooltip
-                style={{
-                  marginRight: "8px",
-                  marginLeft: "8px",
-                }}
-                id="emailTooltip"
-                place="right"
-                effect="solid"
-              />
+              {expand ? (
+                <p>E-Mail</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="emailTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
             </div>
             <div
               className={clsx(
-                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343]",
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
-                  "bg-[#434343] border-1 border-[#242222]": select === 5,
+                  "bg-[#434343] border-1 border-[#242222]": select === 3,
                 },
               )}
               onClick={() => {
                 navigate("/embeddings");
-                setSelect(5);
+                setSelect(3);
               }}
               data-tooltip-id="reportTooltip"
               data-tooltip-content="Reports"
             >
               <ReportIcon color={true ? "white" : "#64748B"} />
-              <Tooltip
-                style={{
-                  marginRight: "8px",
-                  marginLeft: "8px",
-                }}
-                id="reportTooltip"
-                place="right"
-                effect="solid"
-              />
+              {expand ? (
+                <p>Reports</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="reportTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
             </div>
-          </div>
-          <div className="flex justify-center">
             <div
               className={clsx(
-                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#2B292940]",
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full",
+                {
+                  "bg-[#434343] border-1 border-[#242222]": select === 4,
+                },
+              )}
+              onClick={() => {
+                navigate("/flow");
+                setSelect(4);
+              }}
+              data-tooltip-id="intergrationTooltip"
+              data-tooltip-content="Integrations"
+            >
+              <IntegrationIcon color={true ? "white" : "#64748B"} />
+              {expand ? (
+                <p>Integrations</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="intergrationTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
+            </div>
+            <div
+              className={clsx(
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
+                {
+                  "bg-[#434343] border-1 border-[#242222]": select === 5,
+                },
+              )}
+              onClick={() => {
+                navigate("/chat");
+                setSelect(5);
+              }}
+              data-tooltip-id="inboxTooltip"
+              data-tooltip-content="Inbox"
+            >
+              <InboxIcon color={true ? "white" : "#64748B"} />
+              {expand ? (
+                <p>Inbox</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="inboxTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <div
+              className={clsx(
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
+                {
+                  "bg-[#434343] border-1 border-[#242222]": select === 3,
+                },
+              )}
+              onClick={() => {
+                navigate("/embeddings");
+                setSelect(3);
+              }}
+              data-tooltip-id="helpTooltip"
+              data-tooltip-content="Help"
+            >
+              <HelpIcon color={true ? "white" : "#64748B"} />
+              {expand ? (
+                <p>Help</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="helpTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
+            </div>
+            <div
+              className={clsx(
+                "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
+                {
+                  "bg-[#434343] border-1 border-[#242222]": select === 3,
+                },
+              )}
+              onClick={() => {
+                navigate("/embeddings");
+                setSelect(3);
+              }}
+              data-tooltip-id="notificationTooltip"
+              data-tooltip-content="Notifications"
+            >
+              <BellIcon color={true ? "white" : "#64748B"} />
+              {expand ? (
+                <p>Notifications</p>
+              ) : (
+                <Tooltip
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    fontWeight: "200",
+                  }}
+                  id="notificationTooltip"
+                  place="right"
+                  effect="solid"
+                />
+              )}
+            </div>
+            <div
+              className={clsx(
+                "cursor-pointer transition-all rounded-lg hover:bg-[#2B292940] flex items-center gap-2 w-full ",
                 {
                   "bg-[#2B2929] border-2 border-[#242222]": false,
                 },
               )}
             >
               <UserDropdownMenu user={user} />
+              {expand ? <p>{user.name}</p> : ""}
             </div>
           </div>
         </div>
-        {/* <div className="absolute top-1/2 right-[-15px] cursor-pointer">
-            <OpenSidebarIcon />
-          </div> */}
       </div>
     )
   );

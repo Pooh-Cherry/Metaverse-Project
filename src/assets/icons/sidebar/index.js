@@ -1,21 +1,23 @@
-import CloseSidebarIcon from "./CloseSidebar";
+import HelpIcon from "./Help";
 import DashboardIcon from "./Dashboard";
-import MessagesIcon from "./Messages";
-import OpenSidebarIcon from "./OpenSidebar";
+import InboxIcon from "./Inbox";
+import ExpandIcon from "./Expand";
 import IntegrationIcon from "./Integration";
 import SupportIcon from "./Support";
 import UsersIcon from "./Users";
 import EmailsIcon from "./Emails";
 import ReportIcon from "./Report";
+import BellIcon from "./Bell";
 
 export {
-  CloseSidebarIcon,
+  HelpIcon,
   DashboardIcon,
-  MessagesIcon,
-  OpenSidebarIcon,
+  InboxIcon,
+  ExpandIcon,
   IntegrationIcon,
   SupportIcon,
   UsersIcon,
   EmailsIcon,
   ReportIcon,
+  BellIcon,
 };

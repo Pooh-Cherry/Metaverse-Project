@@ -1,6 +1,6 @@
 import React from "react";
 
-const IntegrationIcon = ({ width = 20, height = 20, color = "#64748B" }) => {
+const IntegrationIcon = ({ width = 18, height = 20, color = "#64748B" }) => {
   return (
     <svg
       width={width}
