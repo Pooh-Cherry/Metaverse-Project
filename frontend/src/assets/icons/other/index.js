@@ -5,5 +5,31 @@ import PinIcon from "./Pin";
 import SearchIcon from "./Search";
 import RefreshIcon from "./Refresh";
 import ExitIcon from "./Exit";
+import UsersIcon from "./Users";
+import ActionIcon from "./Action";
+import VhistoryIcon from "./Vhistory";
+import SettingsIcon from "./Settings";
+import MessageIcon from "./Message";
+import SalesIcon from "./Sales";
+import ServiceIcon from "./Service";
+import WarningIcon from "./Warning";
+import PencilIcon from "./Pencil";
 
-export { Icon, MarkIcon, MoreIcon, PinIcon, SearchIcon, RefreshIcon, ExitIcon };
+export {
+  Icon,
+  MarkIcon,
+  MoreIcon,
+  PinIcon,
+  SearchIcon,
+  RefreshIcon,
+  ExitIcon,
+  ActionIcon,
+  UsersIcon,
+  VhistoryIcon,
+  SettingsIcon,
+  MessageIcon,
+  SalesIcon,
+  ServiceIcon,
+  WarningIcon,
+  PencilIcon,
+};

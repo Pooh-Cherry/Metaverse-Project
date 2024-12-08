@@ -4,3 +4,4 @@ export * from "./media";
 export * from "./sidebar";
 export * from "./vector";
 export * from "./other";
+export * from "./social";
