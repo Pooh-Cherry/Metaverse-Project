@@ -1,6 +1,6 @@
 import React from "react";
 
-const ReportIcon = ({ width = 20, height = 20, color = "#64748B" }) => (
+const ReportIcon = ({ width = 20, height = 20, color = "white" }) => (
   <svg
     width={width}
     height={height}

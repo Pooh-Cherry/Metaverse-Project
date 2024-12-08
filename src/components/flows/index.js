@@ -172,13 +172,14 @@ export default function Flow() {
   }, []);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[calc(100%_-_56px)]">
+    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-full">
       <div className="w-full h-full bg-[#F6F6F6] flex flex-col rounded-xl">
         <div
           style={{
             width: "100%",
             height: "100vh",
             borderRadius: 10,
+            position: "relative",
           }}
         >
           <ReactFlow
@@ -189,7 +190,7 @@ export default function Flow() {
             onConnect={onConnect}
             style={{
               backgroundColor: "#F6F6F6",
-              borderRadius: "12px",
+              borderRadius: "10px",
               paddingRight: "8px",
               width: "calc(100% - 56px)",
             }}
@@ -201,21 +202,22 @@ export default function Flow() {
             <MiniMap />
             <Background variant="dots" gap={12} size={1} />
           </ReactFlow>
+          <button className="floating-save-btn" onClick={() => saveStatus()}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="20px"
+              height="20px"
+            >
+              <path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-3 16H7v-2h7v2zm3-9H5V5h10v5z" />
+            </svg>
+            SAVE
+          </button>
+          <NotificationContainer className="absolute" />
         </div>
         {menuOpen && <RightSidePanel open={menuOpen} />}
-        <button className="floating-save-btn" onClick={() => saveStatus()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            width="20px"
-            height="20px"
-          >
-            <path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-3 16H7v-2h7v2zm3-9H5V5h10v5z" />
-          </svg>
-          Save
-        </button>
-        <NotificationContainer />
+
         <AwesomeModal
           isOpen={type}
           title={"Email List"}

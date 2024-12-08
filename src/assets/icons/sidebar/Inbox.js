@@ -1,6 +1,6 @@
 import React from "react";
 
-const InboxIcon = ({ width = 20, height = 20, color = "#64748B" }) => {
+const InboxIcon = ({ width = 20, height = 20, color = "white" }) => {
   return (
     <svg
       width={width}

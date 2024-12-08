@@ -49,7 +49,7 @@ const UserDropdownMenu = ({ user }) => {
       {isDropdownOpen && (
         <div
           id="dropdownAvatar"
-          className="absolute left-14 bottom-2 bg-white divide-y divide-gray-100 rounded-lg shadow-[0_0_8px_#0004] w-44 max-h-[166px] w-[318px]"
+          className="absolute left-12 bottom-2 bg-white divide-y divide-gray-100 rounded-lg shadow-[0_0_8px_#0004] w-44 max-h-[166px] w-[318px]"
         >
           <div className="px-4 py-3 text-sm text-black font-bold w-full flex gap-4 cursor-default	">
             <div>

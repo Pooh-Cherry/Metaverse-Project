@@ -1,10 +1,10 @@
 import React from "react";
 
-const MarkIcon = ({ width = 36, height = 41, color = "#2B2929" }) => {
+const MarkIcon = ({ width = 40, height = 40, color = "white" }) => {
   return (
     <svg
-      width="40"
-      height="40"
+      width={width}
+      height={height}
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

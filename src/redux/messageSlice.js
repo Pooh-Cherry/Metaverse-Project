@@ -25,6 +25,10 @@ const messageSlice = createSlice({
       state.pinned = [];
       state.attachments = [];
     },
+    clearMessagesContent: (state) => {
+      state.messages = []; // Only clear messages and related content
+      state.attachments = [];
+    },
     initMessage: (state, payload) => {
       state.room = payload.payload.room;
       state.messages = payload.payload.messages;
@@ -153,6 +157,8 @@ const messageSlice = createSlice({
 
 export const {
   addMessage,
+  clearMessage,
+  clearMessagesContent,
   setMessage,
   setStatus,
   initMessage,

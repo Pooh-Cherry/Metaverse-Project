@@ -392,7 +392,7 @@ const List = () => {
   ];
 
   return (
-    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[calc(100%_-_56px)] max-w-[100%]">
+    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-full max-w-[100%]">
       <div
         className="h-full bg-[#F6F6F6] flex flex-col rounded-xl x-full"
         style={{ width: "100%" }}

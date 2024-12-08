@@ -45,8 +45,8 @@ const Sidebar = () => {
               className={`flex items-center gap-2 ${expand ? "w-full flex-row justify-between" : "flex-col"}`}
             >
               <div className="transition-all rounded-lg flex items-center gap-2">
-                <MarkIcon color={true ? "white" : "#64748B"} />
-                {expand ? <p>WebBox</p> : ""}
+                <MarkIcon />
+                {expand && <p>WebBox</p>}
               </div>
               <div
                 className={clsx(
@@ -59,10 +59,8 @@ const Sidebar = () => {
                 data-tooltip-id="expandTooltip"
                 data-tooltip-content="Expand"
               >
-                <ExpandIcon color={true ? "white" : "#64748B"} />
-                {expand ? (
-                  ""
-                ) : (
+                <ExpandIcon />
+                {!expand && (
                   <Tooltip
                     style={{
                       marginRight: "8px",
@@ -90,7 +88,7 @@ const Sidebar = () => {
               data-tooltip-id="dashboardTooltip"
               data-tooltip-content="Dashboard"
             >
-              <DashboardIcon color={true ? "white" : "#64748B"} />
+              <DashboardIcon />
               {expand ? (
                 <p>Dashboard</p>
               ) : (
@@ -120,7 +118,7 @@ const Sidebar = () => {
               data-tooltip-id="emailTooltip"
               data-tooltip-content="E-Mail"
             >
-              <EmailsIcon color={true ? "white" : "#64748B"} />
+              <EmailsIcon />
               {expand ? (
                 <p>E-Mail</p>
               ) : (
@@ -150,7 +148,7 @@ const Sidebar = () => {
               data-tooltip-id="reportTooltip"
               data-tooltip-content="Reports"
             >
-              <ReportIcon color={true ? "white" : "#64748B"} />
+              <ReportIcon />
               {expand ? (
                 <p>Reports</p>
               ) : (
@@ -180,7 +178,7 @@ const Sidebar = () => {
               data-tooltip-id="intergrationTooltip"
               data-tooltip-content="Integrations"
             >
-              <IntegrationIcon color={true ? "white" : "#64748B"} />
+              <IntegrationIcon />
               {expand ? (
                 <p>Integrations</p>
               ) : (
@@ -210,7 +208,7 @@ const Sidebar = () => {
               data-tooltip-id="inboxTooltip"
               data-tooltip-content="Inbox"
             >
-              <InboxIcon color={true ? "white" : "#64748B"} />
+              <InboxIcon />
               {expand ? (
                 <p>Inbox</p>
               ) : (
@@ -242,7 +240,7 @@ const Sidebar = () => {
               data-tooltip-id="helpTooltip"
               data-tooltip-content="Help"
             >
-              <HelpIcon color={true ? "white" : "#64748B"} />
+              <HelpIcon />
               {expand ? (
                 <p>Help</p>
               ) : (
@@ -272,7 +270,7 @@ const Sidebar = () => {
               data-tooltip-id="notificationTooltip"
               data-tooltip-content="Notifications"
             >
-              <BellIcon color={true ? "white" : "#64748B"} />
+              <BellIcon />
               {expand ? (
                 <p>Notifications</p>
               ) : (
@@ -290,14 +288,14 @@ const Sidebar = () => {
             </div>
             <div
               className={clsx(
-                "cursor-pointer transition-all rounded-lg hover:bg-[#2B292940] flex items-center gap-2 w-full ",
+                "cursor-pointer transition-all rounded-lg hover:bg-[#2B292940] flex items-center gap-2 w-full",
                 {
                   "bg-[#2B2929] border-2 border-[#242222]": false,
                 },
               )}
             >
               <UserDropdownMenu user={user} />
-              {expand ? <p>{user.name}</p> : ""}
+              {expand && <p>{user.name}</p>}
             </div>
           </div>
         </div>

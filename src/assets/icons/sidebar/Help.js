@@ -1,6 +1,6 @@
 import React from "react";
 
-const HelpIcon = ({ width = 20, height = 20, color = "#E2E8F0" }) => {
+const HelpIcon = ({ width = 20, height = 20, color = "white" }) => {
   return (
     <svg
       width={width}

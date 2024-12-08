@@ -1,6 +1,6 @@
 import React from "react";
 
-const BellIcon = ({ width = 18, height = 20, color = "#475569" }) => {
+const BellIcon = ({ width = 18, height = 20, color = "white" }) => {
   return (
     <svg
       width={width}

@@ -1,6 +1,6 @@
 import React from "react";
 
-const EmojiIcon = ({ width = 24, height = 24, color = "#B3B3B2" }) => {
+const EmojiIcon = ({ width = 24, height = 24, color = "black" }) => {
   return (
     <svg
       width={width}

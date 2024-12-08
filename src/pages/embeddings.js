@@ -34,7 +34,7 @@ const Embeddings = () => {
   }, []);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[calc(100%_-_56px)]">
+    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-full">
       <div className="w-full h-full bg-[#F6F6F6] flex flex-col rounded-xl p-6">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-bold">AI KnowledgeBase</div>
@@ -51,7 +51,7 @@ const Embeddings = () => {
             X
           </button> */}
         </div>
-        <div className="h-full flex pt-4 w-full">
+        <div className="h-full flex pt-4 w-full justify-center">
           <div className="bg-white container rounded-2xl shadow-[0_0_8px_#0001] flex">
             <div className="w-[340px] min-w-[340px] shadow-[4px_0_8px_#00000008] rounded-e-lg p-9 flex flex-col justify-between">
               <div className="flex flex-col gap-2">

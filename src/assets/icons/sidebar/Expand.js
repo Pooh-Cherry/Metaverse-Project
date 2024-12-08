@@ -1,6 +1,6 @@
 import React from "react";
 
-const ExpandIcon = ({ width = 25, height = 20, color = "#E2E8F0" }) => {
+const ExpandIcon = ({ width = 25, height = 20, color = "white" }) => {
   return (
     <svg
       width={width}

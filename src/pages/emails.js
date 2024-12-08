@@ -51,7 +51,7 @@ const TableComponent = () => {
   }, []);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen w-screen py-2 pr-2 w-[calc(100%_-_56px)]">
+    <div className="h-screen min-h-screen max-h-screen w-screen py-2 pr-2 w-full">
       <div className="w-full h-full bg-[#F6F6F6] flex flex-col rounded-xl p-6">
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl font-bold">Manage Bot Emails</h2>

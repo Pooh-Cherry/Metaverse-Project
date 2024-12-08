@@ -133,7 +133,7 @@ code {
 }
 
 .floating-save-btn {
-  position: fixed; /* Keeps the button floating */
+  position: absolute; /* Keeps the button floating */
   top: 20px; /* Adjust distance from the top */
   left: calc(100% - 120px); /* Adjust distance from the left */
   display: flex; /* For aligning icon and text */

@@ -1,5 +1,5 @@
-import DownVectorIcon from "./Down";
 import LeftVectorIcon from "./Left";
+import DownVectorIcon from "./Down";
 import RightVectorIcon from "./Right";
 
-export { DownVectorIcon, LeftVectorIcon, RightVectorIcon };
+export { LeftVectorIcon, DownVectorIcon, RightVectorIcon };
