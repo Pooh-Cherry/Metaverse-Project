@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ReactFlow,
   MiniMap,
@@ -49,7 +49,7 @@ import {
   ServiceIcon,
   WarningIcon,
   PencilIcon,
-  EmailsIcon,
+  EmailIcon,
   InstagramIcon,
   MessengerIcon,
   WhatsappIcon,
@@ -66,16 +66,10 @@ export default function Flow() {
     menuOpen,
     type,
     setType,
-    contents,
     setContents,
   } = useFlow();
-  const [size, setSize] = useState({
-    width: document.documentElement.clientWidth,
-    height: document.documentElement.clientHeight,
-  });
+
   const [records, setRecords] = useState([]);
-  const minor = 120;
-  const start = size.height / 2.2;
   const [select, setSelect] = useState(0);
   const [fetchedSocialConntedStates, setFetchedSocialConntedStates] = useState(
     {},
@@ -102,41 +96,6 @@ export default function Flow() {
     fallback: FallbackNode,
   };
 
-  const formatTriggers = useMemo(() => {
-    return [
-      {
-        id: "start",
-        type: "start",
-        position: { x: 100, y: start },
-        data: {},
-      },
-      {
-        id: "welcome",
-        type: "welcome",
-        position: { x: 350, y: start - 2 * minor },
-        data: {},
-      },
-      {
-        id: "contact_us",
-        type: "contact_us",
-        position: { x: 350, y: start - minor },
-        data: {},
-      },
-      {
-        id: "faq",
-        type: "faq",
-        position: { x: 350, y: start },
-        data: {},
-      },
-      {
-        id: "fallback",
-        type: "fallback",
-        position: { x: 350, y: start + minor },
-        data: {},
-      },
-    ];
-  }, [start]);
-
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes],
@@ -157,16 +116,15 @@ export default function Flow() {
     setType(null);
   };
 
-  const getRecords = async () => {
+  const getRecords = useCallback(async () => {
     const response = await GetBotEmails();
     const trigger_response = await getTriggerEmails();
     setRecords(response.emails);
     const trigger_list = trigger_response.email_triggers;
     setTrigger(trigger_list);
-    // setNodes(formatTriggers)
-  };
+  }, [setRecords, setTrigger]);
 
-  const getContents = async () => {
+  const getContents = useCallback(async () => {
     const response = await getTriggers();
     const triggers = response.triggers;
 
@@ -179,9 +137,9 @@ export default function Flow() {
       };
     });
     setContents(contents);
-  };
+  }, [setContents]);
 
-  const getComponents = async () => {
+  const getComponents = useCallback(async () => {
     let newNodes = [];
     const response = await GetComponents();
     response.nodes.forEach((node) => {
@@ -196,7 +154,7 @@ export default function Flow() {
     });
     setNodes(newNodes);
     setEdges(response.edges);
-  };
+  }, [setNodes, setEdges]);
 
   const saveStatus = async () => {
     await saveComponents(nodes, edges);
@@ -344,7 +302,7 @@ export default function Flow() {
     setVersionSelect(
       fetchedHistoryListTemp.findIndex((version) => version.preview === true),
     );
-  }, []);
+  }, [getRecords, getContents, getComponents]);
 
   return (
     <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-full">
@@ -456,7 +414,7 @@ export default function Flow() {
                   </div>
                   <div className="flex w-[50%] items-center gap-3 text-lg font-semibold pb-3">
                     <div className="cursor-pointer p-2.5 transition-all rounded-lg bg-[#E8E8E8] gap-2 w-[44px] h-[44px] flex justify-center items-center">
-                      <EmailsIcon color={"black"} />
+                      <EmailIcon color={"white"} />
                     </div>
                     Email
                   </div>
@@ -501,9 +459,9 @@ export default function Flow() {
                 </div>
                 <div className="flex pt-5 w-full flex-col gap-3">
                   <div className="flex w-full items-center justify-between text-lg font-semibold p-2 rounded-[5px] border border-slate-400">
-                    <div className="flex justify-center items-center gap-[10px] items-center">
+                    <div className="flex justify-center items-center gap-2.5 items-center">
                       <div className="cursor-pointer p-2.5 transition-all rounded-lg bg-[#E8E8E8] gap-2 w-[44px] h-[44px] flex justify-center items-center">
-                        <EmailsIcon />
+                        <EmailIcon color={"white"} />
                       </div>
                       Emails
                     </div>
@@ -526,7 +484,7 @@ export default function Flow() {
                     </div>
                   </div>
                   <div className="flex w-full items-center justify-between text-lg font-semibold p-2 rounded-[5px] border border-slate-400">
-                    <div className="flex justify-center items-center gap-[10px] items-center">
+                    <div className="flex justify-center items-center gap-2.5 items-center">
                       <div className="cursor-pointer p-2.5 transition-all rounded-lg bg-[#E8E8E8] gap-2 w-[44px] h-[44px] flex justify-center items-center">
                         <InstagramIcon />
                       </div>
@@ -551,7 +509,7 @@ export default function Flow() {
                     </div>
                   </div>
                   <div className="flex w-full items-center justify-between text-lg font-semibold p-2 rounded-[5px] border border-slate-400">
-                    <div className="flex justify-center items-center gap-[10px] items-center">
+                    <div className="flex justify-center items-center gap-2.5 items-center">
                       <div className="cursor-pointer p-2.5 transition-all rounded-lg bg-[#E8E8E8] gap-2 w-[44px] h-[44px] flex justify-center items-center">
                         <WhatsappIcon />
                       </div>
@@ -576,7 +534,7 @@ export default function Flow() {
                     </div>
                   </div>
                   <div className="flex w-full items-center justify-between text-lg font-semibold p-2 rounded-[5px] border border-slate-400">
-                    <div className="flex justify-center items-center gap-[10px] items-center">
+                    <div className="flex justify-center items-center gap-2.5 items-center">
                       <div className="cursor-pointer p-2.5 transition-all rounded-lg bg-[#E8E8E8] gap-2 w-[44px] h-[44px] flex justify-center items-center">
                         <MessengerIcon />
                       </div>
@@ -621,7 +579,7 @@ export default function Flow() {
                       key={index}
                       className="flex w-full items-center justify-between text-lg font-semibold p-2 rounded-[5px] border border-slate-400"
                     >
-                      <div className="flex justify-center items-center gap-[10px]">
+                      <div className="flex justify-center items-center gap-2.5">
                         <img
                           src={`/avatars/${user.avatar}`}
                           alt="user avatar"
@@ -670,7 +628,7 @@ export default function Flow() {
                       }}
                     >
                       <div className="flex gap-3">
-                        <div className="flex justify-center items-center gap-[10px]">
+                        <div className="flex justify-center items-center gap-2.5">
                           <div className="w-[40px] h-[40px] transition-all rounded-lg items-center text-lg text-white bg-[#9222DC] rounded-full flex text-center align-center justify-center">
                             <div alt="user avatar">
                               {version.builder[0].toUpperCase()}

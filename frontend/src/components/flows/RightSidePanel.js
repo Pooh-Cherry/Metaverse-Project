@@ -6,10 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faClose,
-  faGrip,
   faGripVertical,
-  faHandDots,
-  faTrash,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { AddTrigger } from "../../apis";

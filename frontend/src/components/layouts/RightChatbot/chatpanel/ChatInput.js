@@ -185,7 +185,7 @@ const ChatInput = () => {
             onBlur={handleBlur}
             rows={1}
             placeholder="Send a message"
-            className="resize-none outline-none w-full bg-[white] text-lg text-[#34335B] overflow-auto"
+            className="resize-none outline-none w-full bg-white text-lg text-[#34335B] overflow-auto"
           />
         </div>
         <Emoji addEmoji={addEmoji} />
@@ -194,7 +194,7 @@ const ChatInput = () => {
           type="submit"
           className="h-full rounded-xl flex justify-center items-center"
         >
-          <SendIcon />
+          <SendIcon width={20} height={20} />
         </button>
       </form>
     </>
@@ -214,7 +214,7 @@ const FileUploader = ({ setFiles }) => {
       selectedFiles.forEach((file, index) => {
         formData.append(`file_${index}`, file);
       });
-      console.log(selectedFiles);
+      // console.log(selectedFiles);
 
       try {
         const response = await axios.post(
@@ -227,10 +227,10 @@ const FileUploader = ({ setFiles }) => {
           },
         );
 
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.status === 200) {
-          console.log("Files uploaded successfully", selectedFiles);
+          // console.log("Files uploaded successfully", selectedFiles);
           setFiles(response.data.path);
         } else {
           console.error("Error uploading files");
@@ -256,7 +256,7 @@ const FileUploader = ({ setFiles }) => {
         ref={fileInputRef}
       />
       <div className="cursor-pointer" onClick={openFileDialog}>
-        <AttachmentIcon />
+        <AttachmentIcon width={20} height={20} />
       </div>
     </>
   );
@@ -288,7 +288,7 @@ const Emoji = ({ addEmoji }) => {
         )}
       </div>
       <div className="cursor-pointer" onClick={handleShowEmoji}>
-        <EmojiIcon />
+        <EmojiIcon width={20} height={20} />
       </div>
     </>
   );

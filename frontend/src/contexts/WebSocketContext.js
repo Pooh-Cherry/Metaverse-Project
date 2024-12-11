@@ -7,7 +7,7 @@ import {
   setMessagePin,
   newUserLogin,
 } from "@redux/messageSlice";
-import { SERVER_IP_ADDRESS, SERVER_SOCKET_PORT } from "@constants/config";
+// import { SERVER_IP_ADDRESS, SERVER_SOCKET_PORT } from "@constants/config";
 
 export const WebSocketContext = createContext(null);
 
@@ -18,7 +18,7 @@ export const WebSocketProvider = ({ children }) => {
   const [logout, setLogout] = useState(false);
 
   useEffect(() => {
-    const socketUrl = `ws://${SERVER_IP_ADDRESS}:${SERVER_SOCKET_PORT}/ws`;
+    // const socketUrl = `ws://${SERVER_IP_ADDRESS}:${SERVER_SOCKET_PORT}/ws`;
     try {
       const ws = new WebSocket(
         `ws://127.0.0.1:3000/ws`,
@@ -33,7 +33,7 @@ export const WebSocketProvider = ({ children }) => {
       ws.onmessage = (event) => {
         setMessage(event.data);
         const data = JSON.parse(event.data);
-        console.log(data);
+        // console.log(data);
         if (data.type === "message") {
           dispatch(
             addMessage({ room: data.room, data: data.data, type: "receive" }),

@@ -175,10 +175,13 @@ const Sidebar = ({ url, file, content, setStatus }) => {
 
   const [active, setActive] = useState(0);
 
-  const handleClick = useCallback((param) => {
-    setActive(param);
-    setStatus(param);
-  }, []);
+  const handleClick = useCallback(
+    (param) => {
+      setActive(param);
+      setStatus(param);
+    },
+    [setStatus],
+  );
 
   return (
     <>

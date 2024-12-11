@@ -8,7 +8,7 @@ import {
   MarkIcon,
   DashboardIcon,
   IntegrationIcon,
-  EmailsIcon,
+  EmailIcon,
   ReportIcon,
   BellIcon,
   HelpIcon,
@@ -16,12 +16,13 @@ import {
   InboxIcon,
 } from "@icons";
 import UserDropdownMenu from "./UserDropdownMenu";
+import { useExpand } from "@contexts/ExpandContext";
 
 const Sidebar = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const [select, setSelect] = useState(1);
-  const [expand, setExpand] = useState(false);
+  const { expand, setExpand } = useExpand(); // Retrieve expand state and setter
   const location = useLocation();
 
   useEffect(() => {
@@ -35,11 +36,11 @@ const Sidebar = () => {
   return (
     user.isAuthenticated && (
       <div
-        className={`sm:left-0 z-30 h-screen min-h-screen max-h-screen transition-all w-full ${
-          expand ? "max-w-60" : "max-w-14"
+        className={`z-30 h-screen min-h-screen max-h-screen transition-all ${
+          expand ? "min-w-60" : "w-fit max-w-15"
         }`}
       >
-        <div className="h-full flex flex-col justify-between p-2 text-white text-lg font-bold">
+        <div className="h-full flex flex-col justify-between p-[7px] text-white text-[17px] font-semibold">
           <div className="flex flex-col items-center gap-2">
             <div
               className={`flex items-center gap-2 ${expand ? "w-full flex-row justify-between" : "flex-col"}`}
@@ -50,16 +51,17 @@ const Sidebar = () => {
               </div>
               <div
                 className={clsx(
-                  "cursor-pointer p-2.5 transition-all rounded-lg bg-[#2F2F2F] hover:bg-[#434343] gap-2  ",
+                  "cursor-pointer p-2.5 transition-all rounded-lg bg-[#2F2F2F] hover:bg-[#434343] gap-2",
                   {
                     "bg-[#434343] border-1 border-[#242222]": select === 3,
+                    "justify-center": expand === false,
                   },
                 )}
                 onClick={() => setExpand((expand) => !expand)}
                 data-tooltip-id="expandTooltip"
                 data-tooltip-content="Expand"
               >
-                <ExpandIcon />
+                <ExpandIcon width={20} />
                 {!expand && (
                   <Tooltip
                     style={{
@@ -79,6 +81,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 1,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -109,6 +112,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 2,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -118,7 +122,7 @@ const Sidebar = () => {
               data-tooltip-id="emailTooltip"
               data-tooltip-content="E-Mail"
             >
-              <EmailsIcon />
+              <EmailIcon color={"white"} />
               {expand ? (
                 <p>E-Mail</p>
               ) : (
@@ -139,6 +143,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 3,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -169,6 +174,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 4,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -199,6 +205,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 5,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -231,6 +238,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 3,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -261,6 +269,7 @@ const Sidebar = () => {
                 "cursor-pointer p-2.5 transition-all rounded-lg hover:bg-[#434343] flex items-center gap-5 w-full ",
                 {
                   "bg-[#434343] border-1 border-[#242222]": select === 3,
+                  "justify-center": expand === false,
                 },
               )}
               onClick={() => {
@@ -291,6 +300,7 @@ const Sidebar = () => {
                 "cursor-pointer transition-all rounded-lg hover:bg-[#2B292940] flex items-center gap-2 w-full",
                 {
                   "bg-[#2B2929] border-2 border-[#242222]": false,
+                  "justify-center": expand === false,
                 },
               )}
             >

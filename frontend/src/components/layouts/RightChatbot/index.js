@@ -1,55 +1,28 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import clsx from "clsx";
 
-import { LeftVectorIcon, RightVectorIcon, AnimTypingIcon } from "@icons";
+import { AnimTypingIcon } from "@icons";
 import ChatPanel from "./chatpanel";
 import { useAuth } from "@contexts/AuthContext";
 import { getSelectedUser, clearMessagesContent } from "@redux/messageSlice";
 import { MarkIcon, RefreshIcon, ExitIcon } from "@icons";
 
-const RightChatbot = ({ onClose }) => {
-  const [showPinnedPanel, setShowPinnedPanel] = useState(false);
-
-  const handleClickPinnedPanelView = useCallback(
-    () => setShowPinnedPanel(!showPinnedPanel),
-    [showPinnedPanel],
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) setShowPinnedPanel(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
+const InboxMessages = ({ onClose }) => {
   return (
     <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[25%]">
       <div className="w-full bg-white rounded-tr-xl rounded-tl-xl flex items-center justify-between py-[18px] px-[20px] h-[7%]">
         <UserHeadItem onClose={onClose} />
-        <div
-          className="cursor-pointer px-2 xl:hidden"
-          onClick={handleClickPinnedPanelView}
-        >
-          {showPinnedPanel ? (
-            <LeftVectorIcon width={12} height={18} />
-          ) : (
-            <RightVectorIcon width={12} height={18} />
-          )}
-        </div>
       </div>
       <div className="w-full h-[93%] flex flex-col">
-        <ChatPanel hide={showPinnedPanel} />
+        <ChatPanel />
       </div>
     </div>
   );
 };
 
-export default RightChatbot;
+export default InboxMessages;
 
 export const UserHeadItem = ({ onClose }) => {
   const { isAdmin } = useAuth();
@@ -118,9 +91,7 @@ export const UserHeadItem = ({ onClose }) => {
   );
 };
 
-export const UserAvatar = ({ status, width = 40, height = 40 }) => {
-  const _status = Number(status);
-
+export const UserAvatar = () => {
   return (
     <div>
       <div className="transition-all rounded-lg flex items-center gap-2">

@@ -1,6 +1,6 @@
 import React from "react";
 
-const InstagramIcon = ({ width = 18, height = 18 }) => {
+const InstagramIcon = ({ width = 18, height = 18, opacity = 1 }) => {
   return (
     <svg
       width={width}
@@ -9,7 +9,7 @@ const InstagramIcon = ({ width = 18, height = 18 }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width={width} height={height} fill="url(#pattern0_267_5972)" />
+      <rect width="18" height="18" fill="url(#pattern0_267_5972)" />
       <defs>
         <pattern
           id="pattern0_267_5972"
@@ -20,6 +20,7 @@ const InstagramIcon = ({ width = 18, height = 18 }) => {
           <use href="#image0_267_5972" transform="scale(0.00195312)" />
         </pattern>
         <image
+          opacity={opacity}
           id="image0_267_5972"
           width="512"
           height="512"

@@ -214,7 +214,7 @@ const FileUploader = ({ setFiles }) => {
       selectedFiles.forEach((file, index) => {
         formData.append(`file_${index}`, file);
       });
-      console.log(selectedFiles);
+      // console.log(selectedFiles);
 
       try {
         const response = await axios.post(
@@ -227,10 +227,10 @@ const FileUploader = ({ setFiles }) => {
           },
         );
 
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.status === 200) {
-          console.log("Files uploaded successfully", selectedFiles);
+          // console.log("Files uploaded successfully", selectedFiles);
           setFiles(response.data.path);
         } else {
           console.error("Error uploading files");

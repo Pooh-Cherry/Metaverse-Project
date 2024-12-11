@@ -4,7 +4,7 @@ import InboxIcon from "./Inbox";
 import ExpandIcon from "./Expand";
 import IntegrationIcon from "./Integration";
 import SupportIcon from "./Support";
-import EmailsIcon from "./Emails";
+import EmailIcon from "./Email";
 import ReportIcon from "./Report";
 import BellIcon from "./Bell";
 
@@ -15,7 +15,7 @@ export {
   ExpandIcon,
   IntegrationIcon,
   SupportIcon,
-  EmailsIcon,
+  EmailIcon,
   ReportIcon,
   BellIcon,
 };

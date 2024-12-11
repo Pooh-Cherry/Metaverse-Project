@@ -32,8 +32,6 @@ const MenuModal = ({ parent, onClose }) => {
     };
   }, [onClose]);
 
-  const handleClick = () => {};
-
   const handleOpenSelectEmailModal = useCallback(
     () => setType(parent),
     [setType, parent],

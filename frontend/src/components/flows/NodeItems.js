@@ -9,12 +9,10 @@ import { Handle, Position } from "@xyflow/react";
 import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCheck,
   faComment,
   faContactCard,
   faGripHorizontal,
   faHome,
-  faMailBulk,
   faPaperPlane,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -40,7 +38,7 @@ const BasicNode = ({
   id,
 }) => {
   const label = NODE_LABELS[type];
-  const { setType, trigger, contents } = useFlow();
+  const { trigger, contents } = useFlow();
   const [hover, setHover] = useState(false);
   const [newOpen, setNewOpen] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -134,7 +132,7 @@ const EditName = ({ node, edit, setEdit }) => {
   const [originalTitle, setOriginalTitle] = useState("");
   const [title, setTitle] = useState("");
 
-  const handleClickEdit = useCallback(() => setEdit(true), []);
+  const handleClickEdit = useCallback(() => setEdit(true), [setEdit]);
 
   useEffect(() => {
     const _title = contents[node]?.title || "";
@@ -154,10 +152,11 @@ const EditName = ({ node, edit, setEdit }) => {
       }
       setEdit(false);
     }, 3000);
+
     return () => {
       clearTimeout(timer);
     };
-  }, [setContents, node, title, setEdit, originalTitle]);
+  }, [setContents, node, title, setEdit, originalTitle, contents]);
 
   return (
     <>

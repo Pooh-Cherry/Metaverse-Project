@@ -35,7 +35,7 @@ export const FlowProvider = ({ children }) => {
       setEdges(_edges);
       setTrigger({ ...trigger, [id]: "" });
     },
-    [nodes, edges, trigger],
+    [nodes, edges, trigger, setNodes, setEdges],
   );
 
   return (

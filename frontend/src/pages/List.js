@@ -62,7 +62,7 @@ const List = () => {
   const handleFileChange = async ({ target: { files: newfiles } }) => {
     setCheckedFiles([]);
     const selectedFiles = [...newfiles];
-    console.log(selectedFiles);
+    // console.log(selectedFiles);
     setFiles([...files, ...selectedFiles]);
   };
 
@@ -85,7 +85,7 @@ const List = () => {
           },
         );
 
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.status === 200) {
           console.log("Files uploaded successfully", checkedFiles);

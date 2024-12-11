@@ -10,7 +10,7 @@ const StatusMonitor = () => {
 
   const sendStatus = useCallback(
     (socket, status) => {
-      console.log(status);
+      // console.log(status);
       socket.send(
         JSON.stringify({
           room: isAdmin ? selectedUser || "admin-room" : room,
@@ -23,7 +23,7 @@ const StatusMonitor = () => {
   );
 
   useEffect(() => {
-    console.log(socket.readyState, last, status);
+    // console.log(socket.readyState, last, status);
     if (last === status) return;
     setLast(status);
     if (socket.readyState === 1) sendStatus(socket, status);

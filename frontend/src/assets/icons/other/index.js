@@ -14,6 +14,10 @@ import SalesIcon from "./Sales";
 import ServiceIcon from "./Service";
 import WarningIcon from "./Warning";
 import PencilIcon from "./Pencil";
+import MicIcon from "./Mic";
+import PhoneIcon from "./Phone";
+import TrashIcon from "./Trash";
+import BackIcon from "./Back";
 
 export {
   Icon,
@@ -32,4 +36,8 @@ export {
   ServiceIcon,
   WarningIcon,
   PencilIcon,
+  MicIcon,
+  PhoneIcon,
+  TrashIcon,
+  BackIcon,
 };

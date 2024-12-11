@@ -1,24 +1,18 @@
 import clsx from "clsx";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import moment from "moment";
 
 import ChatInput from "./ChatInput";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@contexts/AuthContext";
 import useOnScreen from "@hooks/useOnScreen";
-import {
-  getSelectedUser,
-  setMessagePin,
-  setMessageStatus,
-} from "@redux/messageSlice";
+import { setMessageStatus } from "@redux/messageSlice";
 import StatusMonitor from "./StatusMonitor";
-import { useWebSocket } from "@contexts/WebSocketContext";
 import { SERVER_ADDRESS } from "@constants/config";
 import { MEDIA_TYPES } from "@constants";
-import { v4 as uuidv4 } from "uuid";
 import { MarkIcon } from "@icons";
 
-const ChatPanel = ({ hide }) => {
+const ChatPanel = () => {
   const user = useAuth();
   const { messages, selectedUser } = useSelector((state) => state.message);
 
@@ -60,12 +54,7 @@ const ChatPanel = ({ hide }) => {
 
   return (
     <>
-      <div
-        className={clsx(
-          "w-full h-full bg-[#EAEEF3] border border-[#E0E5F2] relative transition-all overflow-x-hidden",
-          { "w-0 max-w-0 border-0": hide },
-        )}
-      >
+      <div className="w-full h-full bg-[#EAEEF3] border border-[#E0E5F2] relative transition-all overflow-x-hidden">
         <div className="flex flex-col h-full overflow-y-scroll p-5 gap-6">
           {displayingMessages.map(({ type, item }) =>
             type === "message" ? (
@@ -91,9 +80,7 @@ const ChatPanel = ({ hide }) => {
 export default ChatPanel;
 
 const ChatItem = ({ message, mine, me }) => {
-  const oppo = useSelector(getSelectedUser);
   const dispatch = useDispatch();
-  const { socket } = useWebSocket();
   const { isAdmin } = useAuth();
   const ref = useRef();
   const isVisible = useOnScreen(ref);
@@ -112,18 +99,6 @@ const ChatItem = ({ message, mine, me }) => {
       dispatch(setMessageStatus({ id: message.id }));
     }
   }, [isAdmin, isVisible, mine, message, dispatch]);
-
-  const handlePin = useCallback(() => {
-    const id = uuidv4();
-    dispatch(setMessagePin({ id, message }));
-    socket.send(
-      JSON.stringify({
-        room: "admin-room",
-        type: "pin",
-        data: { room: message.room, id, message },
-      }),
-    );
-  }, [message, dispatch, socket]);
 
   return (
     <>

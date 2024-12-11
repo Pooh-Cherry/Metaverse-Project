@@ -6,7 +6,7 @@ const TableComponent = () => {
   const [records, setRecords] = useState([]);
   const [newRecord, setNewRecord] = useState({ email: "", password: "" });
   const [isOpen, setOpen] = useState(false);
-  const [isDeleted, setDelete] = useState(false);
+  // const [isDeleted, setDelete] = useState(false);
   const [selectedId, setSelectId] = useState("");
 
   const handleInputChange = (e) => {
@@ -37,7 +37,7 @@ const TableComponent = () => {
     const record = records.filter((record) => record.id === id);
     await DeleteBotEmail(record[0].email);
     setRecords((prev) => prev.filter((record) => record.id !== id));
-    setDelete(false);
+    // setDelete(false);
     setOpen(false);
   };
 
@@ -75,7 +75,7 @@ const TableComponent = () => {
               className="w-[45%] px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             <button
-              class="w-[10%] px-5 py-2.5 bg-green-500 text-white border-none rounded cursor-pointer font-bold"
+              className="w-[10%] px-5 py-2.5 bg-green-500 text-white border-none rounded cursor-pointer font-bold"
               onClick={addRecord}
             >
               ➕ Add Email
@@ -152,7 +152,7 @@ const TableComponent = () => {
                 <button
                   className="px-4 mx-2 my-4 bg-[#22272d] text-white rounded-lg"
                   onClick={() => {
-                    setDelete(false);
+                    // setDelete(false);
                     setOpen(false);
                   }}
                 >

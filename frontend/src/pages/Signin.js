@@ -21,45 +21,50 @@ const Signin = () => {
     setUsername(value);
   }, []);
 
-  const signin = useCallback(async (username, dispatch, socket) => {
-    setError("");
-    try {
-      const response = await axios.post(SERVER_ADDRESS + "/api/login", {
-        name: username,
-      });
-      console.log(response.data);
-      if (response.data.error) {
-        setError(response.data.message);
+  const signin = useCallback(
+    async (username, dispatch, socket) => {
+      setError("");
+      try {
+        const response = await axios.post(SERVER_ADDRESS + "/api/login", {
+          name: username,
+        });
+        // console.log(response.data);
+        if (response.data.error) {
+          setError(response.data.message);
+          setLoading(false);
+          return;
+        }
+        navigate("/");
+        socket.send(
+          JSON.stringify({
+            room: response.data.user.room,
+            type: "login",
+            data: response.data.user,
+          }),
+        );
+        dispatch(
+          login({ user: response.data.user, admin: response.data.admin }),
+        );
+        const isAdmin = response.data.user.id === response.data.admin.id;
+        dispatch(
+          initMessage({
+            isAdmin,
+            admin: response.data.admin,
+            room: response.data.user.room,
+            messages: response.data.messages,
+            pinned: response.data.pinned,
+            attachments: response.data.attachments,
+            select: isAdmin ? null : response.data.admin.room,
+            users: isAdmin ? response.data.users : [response.data.admin],
+          }),
+        );
+      } catch (error) {
+        console.log(error);
         setLoading(false);
-        return;
       }
-      navigate("/");
-      socket.send(
-        JSON.stringify({
-          room: response.data.user.room,
-          type: "login",
-          data: response.data.user,
-        }),
-      );
-      dispatch(login({ user: response.data.user, admin: response.data.admin }));
-      const isAdmin = response.data.user.id === response.data.admin.id;
-      dispatch(
-        initMessage({
-          isAdmin,
-          admin: response.data.admin,
-          room: response.data.user.room,
-          messages: response.data.messages,
-          pinned: response.data.pinned,
-          attachments: response.data.attachments,
-          select: isAdmin ? null : response.data.admin.room,
-          users: isAdmin ? response.data.users : [response.data.admin],
-        }),
-      );
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  }, []);
+    },
+    [navigate], // Added navigate here
+  );
 
   const handleSubmit = useCallback(
     async (e) => {

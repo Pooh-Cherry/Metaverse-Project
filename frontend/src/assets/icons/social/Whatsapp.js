@@ -1,6 +1,6 @@
 import React from "react";
 
-const WhatsappIcon = ({ width = 18, height = 18 }) => {
+const WhatsappIcon = ({ width = 18, height = 18, opacity = 1 }) => {
   return (
     <svg
       width={width}
@@ -10,7 +10,7 @@ const WhatsappIcon = ({ width = 18, height = 18 }) => {
       xmlns="http://www.w3.org/2000/svg"
       xlink="http://www.w3.org/1999/xlink"
     >
-      <rect width={width} height={height} fill="url(#pattern0_267_5979)" />
+      <rect width="18" height="18" fill="url(#pattern0_267_5979)" />
       <defs>
         <pattern
           id="pattern0_267_5979"
@@ -21,6 +21,7 @@ const WhatsappIcon = ({ width = 18, height = 18 }) => {
           <use href="#image0_267_5979" transform="scale(0.00195312)" />
         </pattern>
         <image
+          opacity={opacity}
           id="image0_267_5979"
           width="512"
           height="512"

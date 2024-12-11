@@ -1,6 +1,6 @@
 import React from "react";
 
-const MessengerIcon = ({ width = 18, height = 18 }) => {
+const MessengerIcon = ({ width = 18, height = 18, opacity = 1 }) => {
   return (
     <svg
       width={width}
@@ -9,7 +9,7 @@ const MessengerIcon = ({ width = 18, height = 18 }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width={width} height={height} fill="url(#pattern0_267_5986)" />
+      <rect width="18" height="18" fill="url(#pattern0_267_5986)" />
       <defs>
         <pattern
           id="pattern0_267_5986"
@@ -20,6 +20,7 @@ const MessengerIcon = ({ width = 18, height = 18 }) => {
           <use href="#image0_267_5986" transform="scale(0.00195312)" />
         </pattern>
         <image
+          opacity={opacity}
           id="image0_267_5986"
           width="512"
           height="512"

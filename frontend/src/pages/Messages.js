@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
-import { useAuth } from "@contexts/AuthContext";
-import Message from "../components/messages/Message";
 import UserBoard from "../components/messages/UserBoard";
 import AdminMessage from "../components/messages/AdminMessage";
 
 const AdminMessages = () => {
-  const { isAdmin } = useAuth();
   const selectedUser = useSelector((state) => state.message.selectedUser);
   const [showUsersPanel, setShowUsersPanel] = useState(false);
 
@@ -31,44 +28,26 @@ const AdminMessages = () => {
 
   return (
     <div className="h-screen min-h-screen max-h-screen relative flex justify-center py-2 w-full">
-      <div
-        className={clsx("h-full w-full flex px-10 justify-center", {
-          "flex-col": isAdmin,
-        })}
-      >
-        {isAdmin && (
-          <div className="my-4 text-[24px] font-bold text-[#1D1C1C]">
-            Messages
+      <div className="h-full w-full flex px-10 justify-center flex-col">
+        <div className="w-full h-[calc(100vh_-_172px)] flex">
+          <UserBoard show={showUsersPanel} setShow={setShowUsersPanel} />
+
+          <div
+            className={clsx(
+              "flex-grow h-full w-full flex flex-col border rounded-e-[12px]",
+              {
+                "w-[calc(100vw_-_508px)] overflow-hidden border rounded-[12px]":
+                  showUsersPanel,
+              },
+            )}
+          >
+            {selectedUser && (
+              <AdminMessage
+                hide={showUsersPanel}
+                setShowUsersPanel={handleClickUsersPanelView}
+              />
+            )}
           </div>
-        )}
-        <div
-          className={clsx({
-            "w-full h-[calc(100vh_-_172px)] flex": isAdmin,
-            "h-full w-full max-w-[1024px] py-4": !isAdmin,
-          })}
-        >
-          {isAdmin && (
-            <UserBoard show={showUsersPanel} setShow={setShowUsersPanel} />
-          )}
-          {isAdmin && (
-            <div
-              className={clsx(
-                "flex-grow h-full w-full flex flex-col border rounded-e-[12px]",
-                {
-                  "w-[calc(100vw_-_508px)] overflow-hidden border rounded-[12px]":
-                    showUsersPanel,
-                },
-              )}
-            >
-              {selectedUser && (
-                <AdminMessage
-                  hide={showUsersPanel}
-                  setShowUsersPanel={handleClickUsersPanelView}
-                />
-              )}
-            </div>
-          )}
-          {!isAdmin && <Message />}
         </div>
       </div>
     </div>

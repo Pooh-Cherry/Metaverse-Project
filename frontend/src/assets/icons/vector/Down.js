@@ -1,6 +1,11 @@
 import React from "react";
 
-const DownVectorIcon = ({ width = 10, height = 6, color = "#94A3B8" }) => {
+const DownVectorIcon = ({
+  width = 10,
+  height = 6,
+  color = "#94A3B8",
+  opacity = 1,
+}) => {
   return (
     <svg
       width={width}
@@ -10,6 +15,7 @@ const DownVectorIcon = ({ width = 10, height = 6, color = "#94A3B8" }) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
+        opacity={opacity}
         d="M1 1L5 5L9 1"
         stroke={color}
         strokeWidth="2"
