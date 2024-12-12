@@ -102,7 +102,7 @@ const User = ({ user, setSelectedId, selectedId }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-end">
+        <div className="flex flex-col justify-between justify-end">
           <div className="text-[12px] font-normal flex justify-end">
             {formatLastUpdatedDate(user.updated_at)}
           </div>

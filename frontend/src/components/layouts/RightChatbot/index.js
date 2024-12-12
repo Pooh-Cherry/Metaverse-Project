@@ -9,7 +9,7 @@ import { useAuth } from "@contexts/AuthContext";
 import { getSelectedUser, clearMessagesContent } from "@redux/messageSlice";
 import { MarkIcon, RefreshIcon, ExitIcon } from "@icons";
 
-const InboxMessages = ({ onClose }) => {
+const RightChatbot = ({ onClose }) => {
   return (
     <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-[25%]">
       <div className="w-full bg-white rounded-tr-xl rounded-tl-xl flex items-center justify-between py-[18px] px-[20px] h-[7%]">
@@ -22,7 +22,7 @@ const InboxMessages = ({ onClose }) => {
   );
 };
 
-export default InboxMessages;
+export default RightChatbot;
 
 export const UserHeadItem = ({ onClose }) => {
   const { isAdmin } = useAuth();

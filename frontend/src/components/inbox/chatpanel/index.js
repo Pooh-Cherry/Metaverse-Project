@@ -1,77 +1,76 @@
 import clsx from "clsx";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import moment from "moment";
 
 import ChatInput from "./ChatInput";
-import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "@contexts/AuthContext";
-import useOnScreen from "@hooks/useOnScreen";
-import { setMessageStatus } from "@redux/messageSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useAuth } from "@contexts/AuthContext";
+// import useOnScreen from "@hooks/useOnScreen";
+// import { setMessageStatus } from "@redux/messageSlice";
 import StatusMonitor from "./StatusMonitor";
 import { SERVER_ADDRESS } from "@constants/config";
-import { MEDIA_TYPES } from "@constants";
 import InboxLabel from "../label/label";
 
-const ChatPanel = () => {
-  const user = useAuth();
-  const { messages, selectedUser } = useSelector((state) => state.message);
-
+const ChatPanel = ({ messageHistory, setMessageHistory }) => {
   const lastShow = useRef(null);
-
-  const displayingMessages = useMemo(() => {
-    let result = [];
-    let dt = "";
-
-    let _messages = [];
-    if (user.isAdmin)
-      _messages = messages
-        .filter((item) => item.room === selectedUser)
-        .sort((a, b) => {
-          if (a.created_at > b.created_at) return 1;
-          if (a.created_at < b.created_at) return -1;
-          return 0;
-        });
-    else _messages = messages;
-
-    _messages.forEach((item) => {
-      const date = new Date(item.created_at).toLocaleDateString();
-      if (dt !== date) {
-        dt = date;
-        result.push({
-          type: "day",
-          item: { id: `${date}-${item.id}`, text: date },
-        });
-      }
-      result.push({ type: "message", item });
-    });
-    return result;
-  }, [messages, selectedUser, user]);
+  const displayedDates = new Set();
 
   useEffect(() => {
     if (lastShow.current)
       lastShow.current.scrollIntoView({ behavior: "smooth" });
-  }, [displayingMessages]);
+  });
 
   return (
     <>
       <div className="w-full h-full bg-white border-t border-[#E0E5F2] relative transition-all overflow-x-hidden">
         <div className="flex flex-col h-full overflow-y-scroll p-5 gap-2.5">
-          {displayingMessages.map(({ type, item }) =>
-            type === "message" ? (
-              <ChatItem
-                key={item.id}
-                mine={user.id.toString() === item.from.toString()}
-                message={item}
-                me={user}
-              />
-            ) : (
-              <DayDivider date={item} key={item.id} />
-            ),
-          )}
+          {messageHistory.map((item, index) => {
+            // Get current item's date (ignoring time)
+            const currentDate = new Date(item.datetime).toLocaleDateString();
+
+            // Determine if day divider is needed
+            const showDayDivider = !displayedDates.has(currentDate);
+
+            // If needed, add the current date to the set
+            if (showDayDivider) {
+              displayedDates.add(currentDate);
+            }
+
+            return (
+              <React.Fragment key={item.id}>
+                {showDayDivider && <DayDivider date={currentDate} />}
+                {item.id === 1 ? (
+                  <ChatItem
+                    mine={"human sent"}
+                    message={"Start Chat Request Sent"}
+                    date={item.datetime}
+                    attachments={""}
+                  />
+                ) : (
+                  <ChatItem
+                    mine={
+                      item.label.toLowerCase() === "ai sent"
+                        ? "ai sent"
+                        : item.label.toLowerCase() === "human sent"
+                          ? "human sent"
+                          : null
+                    }
+                    message={item.text}
+                    date={item.datetime}
+                    attachments={item.attachments}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
+
           <div className="invisible" ref={lastShow}></div>
         </div>
       </div>
-      <ChatInput />
+      <ChatInput
+        messageHistory={messageHistory}
+        setMessageHistory={setMessageHistory}
+      />
       <StatusMonitor />
     </>
   );
@@ -79,26 +78,14 @@ const ChatPanel = () => {
 
 export default ChatPanel;
 
-const ChatItem = ({ message, mine }) => {
-  const dispatch = useDispatch();
-  const { isAdmin } = useAuth();
+const ChatItem = ({ message, mine, date, attachments }) => {
   const ref = useRef();
-  const isVisible = useOnScreen(ref);
 
-  const attachments =
-    typeof message.attachments === "string"
-      ? JSON.parse(message.attachments)
-      : message.attachments;
+  const attachmentFiles = attachments;
 
   const createMarkup = () => {
-    return { __html: message.text || "" };
+    return { __html: message || "" };
   };
-
-  useEffect(() => {
-    if (isAdmin && !mine && message.status === "unread" && isVisible) {
-      dispatch(setMessageStatus({ id: message.id }));
-    }
-  }, [isAdmin, isVisible, mine, message, dispatch]);
 
   return (
     <>
@@ -117,13 +104,13 @@ const ChatItem = ({ message, mine }) => {
             )} */}
             <div className="flex flex-col w-full">
               <div className="flex flex-col">
-                {message.text && (
+                {message && (
                   <div
                     className={clsx(
                       "p-3 rounded-lg text-lg font-normal break-words flex-wrap",
                       mine
                         ? "bg-[#0044E9] text-white rounded-br-none m-0"
-                        : "bg-white text-black rounded-bl-none",
+                        : "bg-[#EAEEF3] text-black rounded-bl-none",
                     )}
                   >
                     <span dangerouslySetInnerHTML={createMarkup()}></span>
@@ -132,11 +119,18 @@ const ChatItem = ({ message, mine }) => {
                         className={`${mine ? "text-white" : "text-[#525252]"}`}
                       >
                         {moment
-                          .utc(message.created_at)
+                          .utc(date)
                           .local()
                           .format("hh:mm A - DD MMM, YYYY")}
                       </div>
-                      {mine && (
+                      {mine === "ai sent" && (
+                        <InboxLabel
+                          backgroundColor="white"
+                          textColor="#0066FF"
+                          content="AI Response"
+                        />
+                      )}
+                      {mine === "human sent" && (
                         <InboxLabel
                           backgroundColor="white"
                           textColor="#0066FF"
@@ -165,7 +159,7 @@ const ChatItem = ({ message, mine }) => {
         })}
         ref={ref}
       >
-        {attachments && (
+        {attachmentFiles && (
           <div
             className={clsx("flex mt-2 gap-4 flex-wrap", {
               "justify-end mr-12": mine,
@@ -173,8 +167,8 @@ const ChatItem = ({ message, mine }) => {
             })}
           >
             <div className="sm:max-w-[10%] flex gap-1">
-              {attachments.map((item, index) => (
-                <FileItem key={index} src={item.path} />
+              {attachmentFiles.map((item, index) => (
+                <FileItem key={index} src={item} />
               ))}
             </div>
           </div>
@@ -189,7 +183,7 @@ const DayDivider = ({ date }) => {
     <div className="mt-2 mb-1 flex justify-stretch items-center">
       <div className="border-t-2 border-[#34335B10] w-full"></div>
       <div className="text-[#34335BA0] font-[500] text-nowrap mx-4">
-        {moment.utc(date.text).local().format("D MMMM YYYY")}
+        {moment.utc(date).local().format("D MMMM YYYY")}
       </div>
       <div className="border-t-2 border-[#34335B10] w-full"></div>
     </div>
@@ -197,23 +191,28 @@ const DayDivider = ({ date }) => {
 };
 
 const FileItem = ({ src }) => {
-  const ext = src.substring(src.lastIndexOf(".") + 1);
-  const type = MEDIA_TYPES.includes(ext.toLowerCase()) ? "media" : "file";
-  const title = src.substring(src.indexOf("-") + 1);
+  const ext = src.substring(src.lastIndexOf(".") + 1).toLowerCase();
+  const MEDIA_TYPES = ["jpg", "jpeg", "png", "gif", "bmp", "svg"]; // Ensure MEDIA_TYPES is defined
+  const type = MEDIA_TYPES.includes(ext) ? "media" : "file";
+
+  // Extracts the filename from the URL
+  const filename = src.substring(src.lastIndexOf("/") + 1);
+  // Determines the title by removing the extension from the filename
+  const title = filename.substring(0, filename.lastIndexOf(".")) || filename;
 
   return (
     <div className="h-20 w-24 overflow-hidden flex justify-center items-center border rounded-lg">
       {type === "file" && (
-        <div className="flex flex-col">
-          <span className="text-center font-bold">{ext}</span>
-          <span className="text-center text-xs w-16 break-words overflow-hidden">
+        <div className="flex flex-col text-center">
+          <span className="font-bold">{ext.toUpperCase()}</span>
+          <span className="text-xs w-16 break-words overflow-hidden">
             {title.length > 15 ? `${title.substring(0, 15)}...` : title}
           </span>
         </div>
       )}
       {type === "media" && (
         <img
-          alt="file"
+          alt={filename} // Use filename as alt text for better accessibility
           src={`${SERVER_ADDRESS}/${src}`}
           width={96}
           height={80}

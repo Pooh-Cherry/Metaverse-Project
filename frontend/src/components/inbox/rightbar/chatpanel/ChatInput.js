@@ -1,32 +1,40 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import clsx from "clsx";
 
-import { SendIcon, EmojiIcon, AttachmentIcon, MicIcon } from "@icons";
-// import { addMessage, getSelectedUser, setStatus } from "@redux/messageSlice";
-// import { setStatus as setAuthStatus } from "@redux/authSlice";
+import { SendIcon, EmojiIcon, AttachmentIcon } from "@icons";
+import { addMessage, getSelectedUser, setStatus } from "@redux/messageSlice";
+import { setStatus as setAuthStatus } from "@redux/authSlice";
 import { MEDIA_TYPES } from "@constants";
 import { SERVER_ADDRESS } from "@constants/config";
-// import { useAuth } from "@contexts/AuthContext";
-// import { useWebSocket } from "@contexts/WebSocketContext";
+import { useAuth } from "@contexts/AuthContext";
+import { useWebSocket } from "@contexts/WebSocketContext";
 
-const ChatInput = ({ messageHistory, setMessageHistory }) => {
-  // const dispatch = useDispatch();
-  // const { room, selectedUser } = useSelector((state) => state.message);
-  // const _selectedUser = useSelector(getSelectedUser);
-  // const user = useAuth();
-  // const { socket } = useWebSocket();
+const ChatInput = () => {
+  const dispatch = useDispatch();
+  const { room, selectedUser } = useSelector((state) => state.message);
+  const _selectedUser = useSelector(getSelectedUser);
+  const user = useAuth();
+  const { socket } = useWebSocket();
   const textAreaRef = useRef(null);
   const [input, setInput] = useState("");
   const [files, setFiles] = useState([]);
 
-  const handleInputChange = ({ target: { value } }) => {
-    setInput(value);
-  };
+  const handleInputChange = useCallback(
+    ({ target: { value } }) => {
+      setInput(value);
+      dispatch(setAuthStatus(3));
+      const timer = setTimeout(() => {
+        dispatch(setAuthStatus(0));
+      }, 3000);
+      return () => clearTimeout(timer);
+    },
+    [dispatch],
+  );
 
   const handleClickRemoveFile = useCallback(
     (src) => setFiles(files.filter((item) => item !== src)),
@@ -38,47 +46,59 @@ const ChatInput = ({ messageHistory, setMessageHistory }) => {
     [files],
   );
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && event.ctrlKey) {
-      event.preventDefault();
-      // if (input || files.length > 0) onSendMessage(input, files);
-      if (input || files.length > 0) {
-        setMessageHistory([
-          ...messageHistory,
-          {
-            id: messageHistory.length + 1,
-            in_out: "out",
-            text: input,
-            attachments: files,
-            datetime: new Date().toISOString(),
-            label: "human sent",
-          },
-        ]);
-        setInput("");
-        setFiles("");
+  const onSendMessage = useCallback(
+    (message, files) => {
+      const _msg = {
+        room: user.isAdmin ? selectedUser : room,
+        id: uuidv4(),
+        text: message,
+        from: user.id,
+        to: user.isAdmin ? _selectedUser.id : user.admin.id,
+        attachments: files,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        status: user.isAdmin ? "read" : "unread",
+      };
+      if (!user.isAdmin) dispatch(setStatus(3));
+      dispatch(
+        addMessage({
+          room: user.isAdmin ? selectedUser : room,
+          data: _msg,
+          type: "send",
+        }),
+      );
+      if (socket) {
+        socket.send(
+          JSON.stringify({
+            room: user.isAdmin ? selectedUser : room,
+            type: user.isAdmin ? "reply" : "message",
+            data: _msg,
+          }),
+        );
       }
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // if (input || files.length > 0) onSendMessage(input, files);
-    if (input || files.length > 0) {
-      setMessageHistory([
-        ...messageHistory,
-        {
-          id: messageHistory.length + 1,
-          in_out: "out",
-          text: input,
-          attachments: files,
-          datetime: new Date().toISOString(),
-          label: "human sent",
-        },
-      ]);
       setInput("");
-      setFiles("");
-    }
-  };
+      setFiles([]);
+    },
+    [dispatch, user, socket, room, selectedUser, _selectedUser],
+  );
+
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter" && event.ctrlKey) {
+        event.preventDefault();
+        if (input || files.length > 0) onSendMessage(input, files);
+      }
+    },
+    [input, files, onSendMessage],
+  );
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (input || files.length > 0) onSendMessage(input, files);
+    },
+    [input, files, onSendMessage],
+  );
 
   const addEmoji = useCallback(
     ({ id, native }) => {
@@ -89,29 +109,29 @@ const ChatInput = ({ messageHistory, setMessageHistory }) => {
     [input],
   );
 
-  // const handleFocus = useCallback(() => {
-  //   console.log("focus");
-  //   socket.send(
-  //     JSON.stringify({
-  //       room: selectedUser,
-  //       type: "select",
-  //       data: null,
-  //     }),
-  //   );
-  // }, [socket, selectedUser]);
+  const handleFocus = useCallback(() => {
+    console.log("focus");
+    socket.send(
+      JSON.stringify({
+        room: selectedUser,
+        type: "select",
+        data: null,
+      }),
+    );
+  }, [socket, selectedUser]);
 
-  // const handleBlur = useCallback(() => {
-  //   console.log("blur");
-  //   if (selectedUser) {
-  //     socket.send(
-  //       JSON.stringify({
-  //         room: "admin-room",
-  //         type: "select",
-  //         data: selectedUser,
-  //       }),
-  //     );
-  //   }
-  // }, [socket, selectedUser]);
+  const handleBlur = useCallback(() => {
+    console.log("blur");
+    if (selectedUser) {
+      socket.send(
+        JSON.stringify({
+          room: "admin-room",
+          type: "select",
+          data: selectedUser,
+        }),
+      );
+    }
+  }, [socket, selectedUser]);
 
   const adjustHeight = () => {
     const maxRows = 10;
@@ -134,9 +154,9 @@ const ChatInput = ({ messageHistory, setMessageHistory }) => {
   }, [input]);
 
   return (
-    <div className="w-full min-h-[6%] p-4 bg-white rounded-br-xl">
+    <>
       <form
-        className="flex justify-between items-center bg-[#EAEEF3] gap-5 px-5 py-2.5 rounded-lg border border-[#BFCBD9]"
+        className="w-full min-h-[6%] flex justify-between gap-2 p-4 bg-white rounded-br-xl rounded-bl-xl items-center"
         method="POST"
         onSubmit={handleSubmit}
       >
@@ -157,15 +177,15 @@ const ChatInput = ({ messageHistory, setMessageHistory }) => {
         )}
         <div className="w-full h-full bg-white rounded-xl flex items-center">
           <textarea
-            // ref={textAreaRef}
+            ref={textAreaRef}
             value={input}
             onKeyDown={handleKeyDown}
             onChange={handleInputChange}
-            // onFocus={handleFocus}
-            // onBlur={handleBlur}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             rows={1}
-            placeholder="Type a message..."
-            className="resize-none outline-none w-full bg-[#EAEEF3] text-lg text-[#34335B] overflow-auto"
+            placeholder="Send a message"
+            className="resize-none outline-none w-full bg-white text-lg text-[#34335B] overflow-auto"
           />
         </div>
         <Emoji addEmoji={addEmoji} />
@@ -176,9 +196,8 @@ const ChatInput = ({ messageHistory, setMessageHistory }) => {
         >
           <SendIcon width={20} height={20} />
         </button>
-        <MicIcon width={20} height={20} />
       </form>
-    </div>
+    </>
   );
 };
 

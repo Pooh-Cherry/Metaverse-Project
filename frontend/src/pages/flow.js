@@ -1,14 +1,20 @@
+import React, { useState } from "react";
 import { FlowProvider } from "@contexts/FlowContext";
-import React from "react";
 import Flow from "../components/flows";
+import RightChatbot from "../components/layouts/rightchatbot";
 
 const FlowChart = () => {
+  const [showChatbot, setShowChatbot] = useState(true);
+
   return (
-    <>
-      <FlowProvider>
-        <Flow />
-      </FlowProvider>
-    </>
+    <div className="flex">
+      <div className="flex flow-1 min-w-0 w-full">
+        <FlowProvider>
+          <Flow />
+        </FlowProvider>
+        {showChatbot && <RightChatbot onClose={() => setShowChatbot(false)} />}
+      </div>
+    </div>
   );
 };
 

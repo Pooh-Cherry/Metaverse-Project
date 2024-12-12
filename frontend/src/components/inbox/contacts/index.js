@@ -5,7 +5,7 @@ import { RefreshIcon } from "@icons/other";
 import SocialChannel from "../socialchannel";
 import User from "../user";
 
-const Contacts = ({ userList, setSelectedId, selectedId }) => {
+const Contacts = ({ userList, setSelectedId, selectedId, setShowRightBar }) => {
   // const [socialScrollPosition, setSocialScrollPosition] = useState(0);
   // const socialScrollRef = useRef(null);
   const [searchUser, setSearchUser] = useState("");
@@ -73,10 +73,8 @@ const Contacts = ({ userList, setSelectedId, selectedId }) => {
     );
   };
 
-  const messageHistorySettings = {
-    className: "slider variable-width",
-    infinite: false,
-    dots: false,
+  const socialSettings = {
+    infinite: true,
     swipeToSlide: true,
     centerMode: false,
     slidesToShow: 1,
@@ -91,7 +89,7 @@ const Contacts = ({ userList, setSelectedId, selectedId }) => {
       <div className="flex flex-col p-[10px] border-b border-[#D3D3D3] gap-2.5 justify-between h-[16%]">
         <div className="flex w-full min-w-0 px-[25px]">
           <div className="w-full px-2">
-            <Slider {...messageHistorySettings}>
+            <Slider {...socialSettings}>
               <SocialChannel socialName="Email" messageCnt={1200} />
               <SocialChannel socialName="Phone" active={false} />
               <SocialChannel socialName="SMS" messageCnt={99} />
@@ -126,7 +124,10 @@ const Contacts = ({ userList, setSelectedId, selectedId }) => {
           <InboxLabel backgroundColor="#F43033" content="Cancelled" />
         </div>
       </div>
-      <div className="flex flex-col p-[10px] overflow-auto h-[84%]">
+      <div
+        className="flex flex-col p-[10px] overflow-auto h-[84%]"
+        onDoubleClick={() => setShowRightBar(true)}
+      >
         {filteredUsers.map((user) => (
           <User
             key={user.id}

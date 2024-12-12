@@ -13,21 +13,29 @@ import clsx from "clsx";
 import { BackIcon } from "@icons/other";
 import { useExpand } from "@contexts/ExpandContext";
 
-const InboxMessages = ({ seledtedUser, messageHistory, setSelectedId }) => {
+const InboxMessages = ({
+  selectedUser,
+  messageHistory,
+  setMessageHistory,
+  setSelectedId,
+}) => {
   const { expand } = useExpand();
 
   return (
     <div className="h-[100%] w-full">
-      <div className="w-full h-[10%] bg-white flex items-center justify-between py-[10px] px-3 rounded-tr-xl">
+      <div className="w-full h-[10%] bg-white flex items-center justify-between py-[10px] px-3 rounded-tr-xl overflow-hidden">
         <UserHeadItem
-          seledtedUser={seledtedUser}
+          selectedUser={selectedUser}
           messageHistory={messageHistory}
           setSelectedId={setSelectedId}
           expand={expand}
         />
       </div>
       <div className="w-full h-[90%] flex flex-col">
-        <ChatPanel messageHistory={messageHistory} />
+        <ChatPanel
+          messageHistory={messageHistory}
+          setMessageHistory={setMessageHistory}
+        />
       </div>
     </div>
   );
@@ -36,7 +44,7 @@ const InboxMessages = ({ seledtedUser, messageHistory, setSelectedId }) => {
 export default InboxMessages;
 
 export const UserHeadItem = ({
-  seledtedUser,
+  selectedUser,
   messageHistory,
   setSelectedId,
   expand,
@@ -170,46 +178,53 @@ export const UserHeadItem = ({
   };
 
   const messageHistorySettings = {
-    className: "slider variable-width",
     infinite: false,
-    // centerPadding: "-400px",
     dots: false,
     swipeToSlide: true,
-    centerMode: false,
-    slidesToShow: 1,
+    initialSlide: 0,
+    slidesToShow: 8, // Default setting for large screens
     slidesToScroll: 1,
-    // speed: 500,
-    variableWidth: true,
+    variableWidth: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     responsive: [
       {
-        breakpoint: 1024, // Breakpoint for tablets and larger devices
+        breakpoint: 1920, // Tablets and small desktops
         settings: {
-          slidesToShow: 6,
+          slidesToShow: 4,
           slidesToScroll: 1,
+          variableWidth: false,
         },
       },
       {
-        breakpoint: 768, // Breakpoint for mobile devices
+        breakpoint: 1440, // Tablets and small desktops
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          variableWidth: false,
         },
       },
       {
-        breakpoint: 480, // Breakpoint for smaller mobile devices
+        breakpoint: 1024, // Mobile devices
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          variableWidth: false,
+        },
+      },
+      {
+        breakpoint: 768, // Mobile devices
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          variableWidth: false, // Disable variable width for better fit
+          variableWidth: false,
         },
       },
     ],
   };
 
   return (
-    seledtedUser && (
+    selectedUser && (
       <div className="flex items-center justify-between w-full gap-2">
         <div
           className="flex items-center justify-center cursor-pointer w-8 h-8 hover:bg-[#EAEEF3] rounded-[5px] flex lg:hidden"
@@ -219,35 +234,28 @@ export const UserHeadItem = ({
         </div>
         <div className="flex gap-2.5">
           <img
-            src={`/avatars/${seledtedUser.avartar_url}`}
+            src={`/avatars/${selectedUser.avartar_url}`}
             alt="user avatar"
             className="w-[50px] h-[50px] min-w-9 rounded-lg"
           />
           <div className="flex flex-col">
             <div className="flex items-center gap-2.5">
-              <div className="text-base font-bold">{seledtedUser.name}</div>
-              {renderSocialIcon(seledtedUser.social)}
+              <div className="text-base font-bold">{selectedUser.name}</div>
+              {renderSocialIcon(selectedUser.social)}
             </div>
             <div className="flex items-center">
               <div className="text-[12px] font-normal">
-                {`Last Active ${formatLastUpdatedDate(seledtedUser.updated_at)}`}
+                {`Last Active ${formatLastUpdatedDate(selectedUser.updated_at)}`}
               </div>
             </div>
           </div>
         </div>
         <div className="flex w-full flex-1 min-w-0 px-[25px]">
-          <div className="w-full">
+          <div className="w-full slider-container">
             <Slider {...messageHistorySettings}>
-              {/* <div className="absolute pl-2">
-                <p className="w-[80%] h-[50%] border-b-2 border-black text-transparent">
-                  line
-                </p>
-              </div> */}
               {messageHistory.map((history, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col justify-center items-center px-2"
-                >
+                <div key={index} className="flex-shrink-0 w-full px-2 relative">
+                  <hr className="absolute top-1/2 w-full border-[#eaeaf3]" />
                   <div
                     className={clsx(
                       "flex flex-col justify-center items-center",

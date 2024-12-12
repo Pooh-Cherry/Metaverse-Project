@@ -14,8 +14,12 @@ function App() {
       <WebSocketProvider>
         <AuthProvider>
           <BrowserRouter>
-            <Sidebar />
-            <Router />
+            <div className="flex w-full">
+              <Sidebar />
+              <div className="flex-1 w-full min-w-0">
+                <Router />
+              </div>
+            </div>
           </BrowserRouter>
         </AuthProvider>
       </WebSocketProvider>

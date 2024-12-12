@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import InboxMessages from "../components/inbox";
 import Contacts from "../components/inbox/contacts";
-import { useExpand } from "@contexts/ExpandContext";
+import RightBar from "../components/inbox/rightbar";
 
 const Inbox = () => {
   const [userList, setUserList] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [messageHistory, setMessageHistory] = useState([]);
-  const { expand } = useExpand();
+  const [showRightBar, setShowRightBar] = useState(true);
 
   useEffect(() => {
     const fetchedUserList = [
@@ -17,7 +17,7 @@ const Inbox = () => {
         name: "Alice Johnson",
         avartar_url: "user4.png",
         last_message: "Good morning!",
-        updated_at: "2024-12-10 08:00:00",
+        updated_at: "2024-12-12 08:00:00",
         cnt_new_msg: 300,
         cnt_msg: 22,
         social: "whatsapp",
@@ -491,28 +491,41 @@ const Inbox = () => {
   }, []);
 
   return (
-    <div
-      className={`h-screen min-h-screen max-h-screen py-2 pr-2 w-full ${expand ? "w-[calc(100%_-_240px)]" : "w-[calc(100%_-_54px)]"}`}
-    >
-      <div className="w-full h-full bg-[#F6F6F6] flex rounded-xl">
+    <div className={`h-screen py-2 pr-2 w-full`}>
+      <div
+        className={`w-full h-full flex rounded-xl ${selectedId ? "bg-[#1B1B20]" : "bg-[#F6F6F6]"}`}
+      >
         <div
-          className={`w-full ${expand ? "lg:w-[350px]" : "md:w-[350px]"} ${selectedId !== null && "hidden lg:block"}`}
+          className={`w-full lg:w-[350px] bg-[#F6F6F6] ${selectedId !== null && "hidden lg:block"}`}
         >
           <Contacts
             userList={userList}
             setSelectedId={setSelectedId}
             selectedId={selectedId}
+            setShowRightBar={setShowRightBar}
           />
         </div>
-
-        <div
-          className={`${selectedId === null ? "hidden" : "w-full"} lg:w-[calc(100%_-_350px)] z-20`}
-        >
-          <InboxMessages
-            seledtedUser={userList.find((user) => user.id === selectedId)}
-            messageHistory={messageHistory}
-            setSelectedId={setSelectedId}
-          />
+        <div className="flex flex-1 min-w-0">
+          <div
+            className={`flex gap-2 ${selectedId === null ? "hidden" : "w-full"}  z-20`}
+          >
+            <div className="flex flex-1 min-w-0">
+              <InboxMessages
+                selectedUser={userList.find((user) => user.id === selectedId)}
+                messageHistory={messageHistory}
+                setMessageHistory={setMessageHistory}
+                setSelectedId={setSelectedId}
+              />
+            </div>
+            {showRightBar && selectedId && (
+              <div className="flex w-[370px] hidden xl:flex">
+                <RightBar
+                  selectedUser={userList.find((user) => user.id === selectedId)}
+                  onClose={() => setShowRightBar(false)}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

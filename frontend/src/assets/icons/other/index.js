@@ -18,6 +18,8 @@ import MicIcon from "./Mic";
 import PhoneIcon from "./Phone";
 import TrashIcon from "./Trash";
 import BackIcon from "./Back";
+import DropdownArrowIcon from "./DropdownArrow";
+import StateLightIcon from "./StateLight";
 
 export {
   Icon,
@@ -40,4 +42,6 @@ export {
   PhoneIcon,
   TrashIcon,
   BackIcon,
+  DropdownArrowIcon,
+  StateLightIcon,
 };

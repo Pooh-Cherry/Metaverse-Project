@@ -305,7 +305,7 @@ export default function Flow() {
   }, [getRecords, getContents, getComponents]);
 
   return (
-    <div className="h-screen min-h-screen max-h-screen py-2 pr-2 w-full">
+    <div className="h-screen py-2 pr-2 w-full">
       <div className="w-full h-full bg-[#F6F6F6] flex flex-col rounded-xl">
         <div
           style={{
