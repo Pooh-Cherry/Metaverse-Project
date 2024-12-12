@@ -77,9 +77,9 @@ const Contacts = ({ userList, setSelectedId, selectedId, setShowRightBar }) => {
     infinite: true,
     swipeToSlide: true,
     centerMode: false,
-    slidesToShow: 1,
+    slidesToShow: 4,
     slidesToScroll: 1,
-    variableWidth: true,
+    variableWidth: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };

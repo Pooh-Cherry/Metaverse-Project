@@ -22,7 +22,7 @@ const iconMap = {
 const SocialChannel = ({
   socialName = "Email",
   active = true,
-  messageCnt = "0",
+  messageCnt = 0,
 }) => {
   const IconComponent = iconMap[socialName];
 
@@ -30,12 +30,14 @@ const SocialChannel = ({
     <div className="w-[62px] h-[62px]">
       <div className="w-full">
         <div className="flex justify-end">
-          {!messageCnt && (
+          {messageCnt ? (
             <div
               className={`bg-[#525252] rounded-[3px] px-[5px] text-white text-xs mb-[-14px] mr-[-4px] z-10 ${!active && "invisible"}`}
             >
               <p>{messageCnt > 999 ? "999+" : messageCnt}</p>
             </div>
+          ) : (
+            ""
           )}
         </div>
         <div
